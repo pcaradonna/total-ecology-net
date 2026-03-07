@@ -55,15 +55,56 @@
       right: 2.5rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      z-index: 1;
+    }
+
+    #dvd-logo {
+      position: fixed;
+      width: 180px;
+      filter: invert(1);
+      animation: spin 30s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <main>
+  <img id="dvd-logo" src="assets/logo.png" alt="">
+  <main style="position: relative; z-index: 1;">
     <h1 class="title">Total Ecology</h1>
     <p class="subtitle">Research Lab of Paul CaraDonna</p>
     <p class="tagline">everything, everywhere, connected</p>
   </main>
   <footer>total-ecology.net</footer>
+  <script>
+    const logo = document.getElementById('dvd-logo');
+    let x = 120, y = 80;
+    let vx = 1.0, vy = 0.7;
+
+    function bounce() {
+      const maxX = window.innerWidth  - logo.offsetWidth;
+      const maxY = window.innerHeight - logo.offsetHeight;
+
+      x += vx;
+      y += vy;
+
+      if (x <= 0)    { x = 0;    vx =  Math.abs(vx); }
+      if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
+      if (y <= 0)    { y = 0;    vy =  Math.abs(vy); }
+      if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
+
+      logo.style.left = x + 'px';
+      logo.style.top  = y + 'px';
+
+      requestAnimationFrame(bounce);
+    }
+
+    bounce();
+  </script>
 </body>
 </html>
