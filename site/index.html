@@ -108,13 +108,13 @@
       const offCtx = offscreen.getContext('2d');
       offCtx.drawImage(logo, 0, 0, w, h);
       offCtx.globalCompositeOperation = 'source-in';
-      offCtx.fillStyle = '#ffffff';
+      offCtx.fillStyle = '#aaaaaa';
       offCtx.fillRect(0, 0, w, h);
       offCtx.globalCompositeOperation = 'source-over';
     }
 
     let x = 120, y = 80;
-    let vx = 1.0, vy = 0.7;
+    let vx = 2.2, vy = 1.6;
     let angle = 0;
     const SPIN_DEG_PER_FRAME = 360 / (30 * 60); // full rotation every 30s at 60fps
 
