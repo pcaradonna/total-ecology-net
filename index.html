@@ -105,9 +105,9 @@
 
     // Discrete ghost snapshots
     const ghosts = [];
-    const GHOST_EVERY   = 14;   // stamp one ghost every N frames
-    const GHOST_ALPHA   = 0.5;  // initial opacity of each ghost
-    const GHOST_DECAY   = 0.011; // alpha lost per frame (~45 frames to fade out)
+    const GHOST_EVERY   = 22;    // stamp one ghost every N frames (~2.7/sec)
+    const GHOST_ALPHA   = 0.32;  // initial opacity — dim enough not to pop
+    const GHOST_DECAY   = 0.003; // alpha lost per frame (~107 frames ≈ 1.8s to fade)
     let frameCount = 0;
 
     function bounce() {
