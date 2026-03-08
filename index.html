@@ -103,6 +103,13 @@
     let angle = 0;
     const SPIN_DEG_PER_FRAME = 360 / (30 * 60); // full rotation every 30s at 60fps
 
+    // Discrete ghost snapshots
+    const ghosts = [];
+    const GHOST_EVERY   = 14;   // stamp one ghost every N frames
+    const GHOST_ALPHA   = 0.5;  // initial opacity of each ghost
+    const GHOST_DECAY   = 0.011; // alpha lost per frame (~45 frames to fade out)
+    let frameCount = 0;
+
     function bounce() {
       const logoW = logo.offsetWidth;
       const logoH = logo.offsetHeight;
@@ -112,6 +119,7 @@
       x += vx;
       y += vy;
       angle += SPIN_DEG_PER_FRAME;
+      frameCount++;
 
       if (x <= 0)    { x = 0;    vx =  Math.abs(vx); }
       if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
@@ -122,18 +130,28 @@
       logo.style.top       = y + 'px';
       logo.style.transform = 'rotate(' + angle + 'deg)';
 
-      // Fade previous ghosts by painting a semi-transparent black layer
-      ctx.fillStyle = 'rgba(0,0,0,0.018)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Stamp a new ghost every GHOST_EVERY frames
+      if (frameCount % GHOST_EVERY === 0) {
+        ghosts.push({ x, y, angle, alpha: GHOST_ALPHA });
+      }
 
-      // Draw ghost at current position + rotation
-      ctx.save();
-      ctx.translate(x + logoW / 2, y + logoH / 2);
-      ctx.rotate(angle * Math.PI / 180);
-      ctx.globalAlpha = 0.2;
-      ctx.filter = 'invert(1)';
-      ctx.drawImage(logo, -logoW / 2, -logoH / 2, logoW, logoH);
-      ctx.restore();
+      // Fade all ghosts; remove expired ones
+      for (let i = ghosts.length - 1; i >= 0; i--) {
+        ghosts[i].alpha -= GHOST_DECAY;
+        if (ghosts[i].alpha <= 0) ghosts.splice(i, 1);
+      }
+
+      // Redraw canvas: clear then paint each ghost
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const g of ghosts) {
+        ctx.save();
+        ctx.translate(g.x + logoW / 2, g.y + logoH / 2);
+        ctx.rotate(g.angle * Math.PI / 180);
+        ctx.globalAlpha = g.alpha;
+        ctx.filter = 'invert(1)';
+        ctx.drawImage(logo, -logoW / 2, -logoH / 2, logoW, logoH);
+        ctx.restore();
+      }
 
       requestAnimationFrame(bounce);
     }
