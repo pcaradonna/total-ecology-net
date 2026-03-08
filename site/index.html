@@ -87,9 +87,10 @@
   </main>
   <footer>total-ecology.net</footer>
   <script>
-    const logo   = document.getElementById('dvd-logo');
-    const canvas = document.getElementById('ghost-trail');
-    const ctx    = canvas.getContext('2d');
+    const logo      = document.getElementById('dvd-logo');
+    const canvas    = document.getElementById('ghost-trail');
+    const ctx       = canvas.getContext('2d');
+    const offscreen = document.createElement('canvas'); // pre-rendered silhouette
 
     function resizeCanvas() {
       canvas.width  = window.innerWidth;
@@ -98,6 +99,20 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
+    // Build a flat white filled silhouette from the logo's alpha channel
+    function buildSilhouette() {
+      const w = logo.offsetWidth;
+      const h = logo.offsetHeight;
+      offscreen.width  = w;
+      offscreen.height = h;
+      const offCtx = offscreen.getContext('2d');
+      offCtx.drawImage(logo, 0, 0, w, h);
+      offCtx.globalCompositeOperation = 'source-in';
+      offCtx.fillStyle = '#ffffff';
+      offCtx.fillRect(0, 0, w, h);
+      offCtx.globalCompositeOperation = 'source-over';
+    }
+
     let x = 120, y = 80;
     let vx = 1.0, vy = 0.7;
     let angle = 0;
@@ -105,9 +120,9 @@
 
     // Discrete ghost snapshots
     const ghosts = [];
-    const GHOST_EVERY   = 45;        // stamp one ghost every N frames (~1.3/sec)
-    const GHOST_ALPHA   = 0.42;      // initial opacity
-    const GHOST_DECAY   = 0.000117;  // alpha lost per frame (fades to 0 in ~60s)
+    const GHOST_EVERY  = 18;       // stamp one ghost every N frames (~3.3/sec)
+    const GHOST_ALPHA  = 0.42;     // initial opacity
+    const GHOST_DECAY  = 0.000117; // alpha lost per frame (fades to 0 in ~60s)
     let frameCount = 0;
 
     function bounce() {
@@ -130,36 +145,37 @@
       logo.style.top       = y + 'px';
       logo.style.transform = 'rotate(' + angle + 'deg)';
 
-      // Stamp a new ghost every GHOST_EVERY frames
       if (frameCount % GHOST_EVERY === 0) {
         ghosts.push({ x, y, angle, alpha: GHOST_ALPHA });
       }
 
-      // Fade all ghosts; remove expired ones
       for (let i = ghosts.length - 1; i >= 0; i--) {
         ghosts[i].alpha -= GHOST_DECAY;
         if (ghosts[i].alpha <= 0) ghosts.splice(i, 1);
       }
 
-      // Redraw canvas: clear then paint each ghost
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const g of ghosts) {
         ctx.save();
         ctx.translate(g.x + logoW / 2, g.y + logoH / 2);
         ctx.rotate(g.angle * Math.PI / 180);
         ctx.globalAlpha = g.alpha;
-        ctx.filter = 'invert(1)';
-        ctx.drawImage(logo, -logoW / 2, -logoH / 2, logoW, logoH);
+        ctx.drawImage(offscreen, -logoW / 2, -logoH / 2, logoW, logoH);
         ctx.restore();
       }
 
       requestAnimationFrame(bounce);
     }
 
-    if (logo.complete) {
+    function start() {
+      buildSilhouette();
       bounce();
+    }
+
+    if (logo.complete) {
+      start();
     } else {
-      logo.addEventListener('load', bounce);
+      logo.addEventListener('load', start);
     }
   </script>
 </body>
