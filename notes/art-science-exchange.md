@@ -2,7 +2,7 @@
 
 ## General Text
 
-The Art/Science Exchange is a project that aims to enhance the intellectual collaboration between the arts and the sciences. Since 2013, we have been interested in exploring how the intersection of art and science can broaden our understanding and engagement with nature.
+The Art/Science Exchange is a long-term project led that fosters genuine, bidirectional sharing among scientists and artists. Since 2013, we have been exploring how the confluence of art and science can broaden our understanding and engagement with nature.
 
 [Add additional text here]
 
@@ -10,16 +10,14 @@ The Art/Science Exchange is a project that aims to enhance the intellectual coll
 
 ## Artists
 
-[List artists here — name, affiliation/location, brief note if desired]
-
----
-
-## Projects / Works
-
-- A New Nature
-- Emergence
-- Flight Lines
-- Comparative Color Spectrums
-- Antennae #61 — Earthly Mattering (pgs. 193–218)
-
-[Add additional works here]
+-Mark Dorf
+-Eliza Collin
+-Patricia Wolf
+-Cassandra Croft
+-Erica Shapiro-Sakashita
+-Raina Belleau
+-Caleb Churchill
+-Brian House
+-Lucia Monge
+-Ellie Irons
+-Nathan Hass
