@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>People — Total Ecology</title>
+  <title>Research Group — Total Ecology</title>
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -75,8 +75,8 @@
     .person {
       display: flex;
       gap: 2.4rem;
-      margin-bottom: 3.2rem;
-      padding-bottom: 3.2rem;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
       border-bottom: 1px solid #0e0e0e;
     }
 
@@ -103,6 +103,9 @@
 
     .person-info {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .person-name {
@@ -114,32 +117,16 @@
 
     .person-role {
       font-size: 0.6rem;
-      color: #3a3a3a;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 0.9rem;
+      color: #aaa;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
     }
 
-    .person-description {
-      font-size: 0.66rem;
-      color: #666;
-      line-height: 1.75;
-      max-width: 480px;
-      margin-bottom: 1rem;
-    }
-
-    .person-keywords {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .keyword {
-      font-size: 0.54rem;
-      letter-spacing: 0.05em;
-      color: #2e2e2e;
-      border: 1px solid #181818;
-      padding: 2px 8px;
+    .person-institution {
+      font-size: 0.58rem;
+      color: #555;
+      letter-spacing: 0.02em;
+      line-height: 1.6;
     }
 
     footer {
@@ -161,26 +148,55 @@
 
   <nav>
     <a href="index.html" class="nav-link">home</a>
-    <a href="people.html" class="nav-link active">people</a>
+    <a href="people.html" class="nav-link active">research group</a>
     <a href="creative.html" class="nav-link">creative inquiry</a>
   </nav>
 
   <main>
-    <p class="page-heading">People</p>
+    <p class="page-heading">Research Group</p>
 
     <div class="person">
       <div class="person-image-placeholder"></div>
       <div class="person-info">
         <div class="person-name">Paul CaraDonna</div>
-        <div class="person-role">Ecologist &nbsp;&middot;&nbsp; Northwestern University / Chicago Botanic Garden</div>
-        <div class="person-description">Studies plant-pollinator interactions, phenology, and community ecology. Interested in how ecological systems change over time and across scales — from individual organisms to whole communities.</div>
-        <div class="person-keywords">
-          <span class="keyword">pollination</span>
-          <span class="keyword">phenology</span>
-          <span class="keyword">networks</span>
-          <span class="keyword">alpine ecology</span>
-          <span class="keyword">bumble bees</span>
-        </div>
+        <div class="person-role">Ecologist &nbsp;&middot;&nbsp; Principal Investigator</div>
+        <div class="person-institution">Chicago Botanic Garden &middot; Northwestern University &middot; Rocky Mountain Biological Laboratory &middot; National Institute for Mathematics in Biology</div>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="person-image-placeholder"></div>
+      <div class="person-info">
+        <div class="person-name">Nick Dorian</div>
+        <div class="person-role">Ecologist</div>
+        <div class="person-institution">Chicago Botanic Garden</div>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="person-image-placeholder"></div>
+      <div class="person-info">
+        <div class="person-name">Dylan T. Simpson</div>
+        <div class="person-role">Ecologist</div>
+        <div class="person-institution">Chicago Botanic Garden &middot; Rocky Mountain Biological Laboratory</div>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="person-image-placeholder"></div>
+      <div class="person-info">
+        <div class="person-name">Ceci Rigby</div>
+        <div class="person-role">Ecologist</div>
+        <div class="person-institution">Chicago Botanic Garden &middot; Rocky Mountain Biological Laboratory</div>
+      </div>
+    </div>
+
+    <div class="person">
+      <div class="person-image-placeholder"></div>
+      <div class="person-info">
+        <div class="person-name">Mark Dorf</div>
+        <div class="person-role">Visual Media Artist</div>
+        <div class="person-institution">Electronic Image (NYC) &middot; Rocky Mountain Biological Laboratory</div>
       </div>
     </div>
 
