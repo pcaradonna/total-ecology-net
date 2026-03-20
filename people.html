@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>People — Total Ecology</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+    }
+
+    nav {
+      position: fixed;
+      top: 2rem;
+      right: 2.5rem;
+      z-index: 5;
+      display: flex;
+      gap: 1.8rem;
+    }
+
+    .nav-link {
+      font-size: 0.7rem;
+      color: #444;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-link.active {
+      color: #888;
+    }
+
+    .site-name {
+      position: fixed;
+      top: 2rem;
+      left: 2.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #444;
+      text-decoration: none;
+      z-index: 5;
+    }
+
+    .site-name:hover {
+      color: #fff;
+    }
+
+    main {
+      padding: 7rem 2.5rem 5rem;
+      max-width: 780px;
+    }
+
+    .page-heading {
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2a2a2a;
+      margin-bottom: 3.5rem;
+    }
+
+    .person {
+      display: flex;
+      gap: 2.4rem;
+      margin-bottom: 3.2rem;
+      padding-bottom: 3.2rem;
+      border-bottom: 1px solid #0e0e0e;
+    }
+
+    .person:last-child {
+      border-bottom: none;
+    }
+
+    .person-image {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(100%);
+    }
+
+    .person-image-placeholder {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      background: #060606;
+      border: 1px solid #111;
+    }
+
+    .person-info {
+      flex: 1;
+    }
+
+    .person-name {
+      font-size: 0.82rem;
+      color: #e0e0e0;
+      letter-spacing: 0.01em;
+      margin-bottom: 0.3rem;
+    }
+
+    .person-role {
+      font-size: 0.6rem;
+      color: #3a3a3a;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.9rem;
+    }
+
+    .person-description {
+      font-size: 0.66rem;
+      color: #666;
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 1rem;
+    }
+
+    .person-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .keyword {
+      font-size: 0.54rem;
+      letter-spacing: 0.05em;
+      color: #2e2e2e;
+      border: 1px solid #181818;
+      padding: 2px 8px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 2rem;
+      right: 2.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      color: #1e1e1e;
+      z-index: 5;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="site-name" href="index.html">Total Ecology</a>
+
+  <nav>
+    <a href="index.html" class="nav-link">home</a>
+    <a href="people.html" class="nav-link active">people</a>
+    <a href="creative.html" class="nav-link">creative</a>
+  </nav>
+
+  <main>
+    <p class="page-heading">People</p>
+
+    <div class="person">
+      <div class="person-image-placeholder"></div>
+      <div class="person-info">
+        <div class="person-name">Paul CaraDonna</div>
+        <div class="person-role">Ecologist &nbsp;&middot;&nbsp; Northwestern University / Chicago Botanic Garden</div>
+        <div class="person-description">Studies plant-pollinator interactions, phenology, and community ecology. Interested in how ecological systems change over time and across scales — from individual organisms to whole communities.</div>
+        <div class="person-keywords">
+          <span class="keyword">pollination</span>
+          <span class="keyword">phenology</span>
+          <span class="keyword">networks</span>
+          <span class="keyword">alpine ecology</span>
+          <span class="keyword">bumble bees</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>total-ecology.net</footer>
+
+</body>
+</html>

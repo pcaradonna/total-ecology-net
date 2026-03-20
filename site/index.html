@@ -49,6 +49,27 @@
       line-height: 1.5;
     }
 
+    nav {
+      position: fixed;
+      top: 2rem;
+      right: 2.5rem;
+      z-index: 2;
+      display: flex;
+      gap: 1.8rem;
+    }
+
+    .nav-link {
+      font-size: 0.7rem;
+      color: #333;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
     footer {
       position: fixed;
       bottom: 2rem;
@@ -79,7 +100,11 @@
   </style>
 </head>
 <body>
-  <canvas id="ghost-trail"></canvas>
+  <nav>
+  <a href="people.html" class="nav-link">people</a>
+  <a href="creative.html" class="nav-link">creative</a>
+</nav>
+<canvas id="ghost-trail"></canvas>
   <img id="dvd-logo" src="assets/logo.png" alt="">
   <main style="position: relative; z-index: 1;">
     <h1 class="title">Total Ecology</h1>

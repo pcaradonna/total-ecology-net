@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative — Total Ecology</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+    }
+
+    nav {
+      position: fixed;
+      top: 2rem;
+      right: 2.5rem;
+      z-index: 5;
+      display: flex;
+      gap: 1.8rem;
+    }
+
+    .nav-link {
+      font-size: 0.7rem;
+      color: #444;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-link.active {
+      color: #888;
+    }
+
+    .site-name {
+      position: fixed;
+      top: 2rem;
+      left: 2.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #444;
+      text-decoration: none;
+      z-index: 5;
+    }
+
+    .site-name:hover {
+      color: #fff;
+    }
+
+    main {
+      padding: 7rem 2.5rem 5rem;
+    }
+
+    .page-heading {
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2a2a2a;
+      margin-bottom: 4rem;
+    }
+
+    .creative-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5rem 3.5rem;
+      max-width: 1100px;
+    }
+
+    @media (max-width: 640px) {
+      .creative-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .creative-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .creative-image-wrap {
+      width: 100%;
+      line-height: 0;
+      margin-bottom: 1.1rem;
+    }
+
+    .creative-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+
+    .creative-image-wrap img:hover {
+      opacity: 1;
+    }
+
+    /* Placeholder shown when no image is provided */
+    .creative-placeholder {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #060606;
+      border: 1px solid #111;
+    }
+
+    .creative-caption {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .creative-title {
+      font-size: 0.68rem;
+      color: #aaa;
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+    }
+
+    .creative-meta {
+      font-size: 0.58rem;
+      color: #333;
+      letter-spacing: 0.04em;
+    }
+
+    .creative-description {
+      font-size: 0.6rem;
+      color: #444;
+      line-height: 1.7;
+      margin-top: 6px;
+      max-width: 420px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 2rem;
+      right: 2.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      color: #1e1e1e;
+      z-index: 5;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="site-name" href="index.html">Total Ecology</a>
+
+  <nav>
+    <a href="index.html" class="nav-link">home</a>
+    <a href="people.html" class="nav-link">people</a>
+    <a href="creative.html" class="nav-link active">creative</a>
+  </nav>
+
+  <main>
+    <p class="page-heading">Creative Output</p>
+
+    <div class="creative-grid">
+
+      <!-- Add new works here. Copy one .creative-item block per work. -->
+      <!-- Images go in assets/creative/ -->
+
+      <div class="creative-item">
+        <div class="creative-image-wrap">
+          <img src="assets/creative/image-01.jpg" alt="">
+        </div>
+        <div class="creative-caption">
+          <div class="creative-title">[Title of work]</div>
+          <div class="creative-meta">2025 &nbsp;&middot;&nbsp; [medium]</div>
+          <!-- Optional: <div class="creative-description">[Description]</div> -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>total-ecology.net</footer>
+
+</body>
+</html>
