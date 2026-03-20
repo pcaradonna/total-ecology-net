@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Creative Inquiry — Total Ecology</title>
+  <title>Art-Science Exchange — Total Ecology</title>
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -61,6 +61,7 @@
 
     main {
       padding: 7rem 2.5rem 5rem;
+      max-width: 780px;
     }
 
     .page-heading {
@@ -68,74 +69,42 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #2a2a2a;
+      margin-bottom: 3.5rem;
+    }
+
+    .intro-text {
+      font-size: 0.72rem;
+      color: #888;
+      line-height: 1.8;
       margin-bottom: 4rem;
+      max-width: 600px;
     }
 
-    .creative-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 5rem 3.5rem;
-      max-width: 1000px;
-      margin: 0 auto;
-      justify-items: center;
+    .section-label {
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2a2a2a;
+      margin-bottom: 1.8rem;
     }
 
-    @media (max-width: 640px) {
-      .creative-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .creative-item {
+    .artist-list {
+      list-style: none;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 0.75rem;
     }
 
-    .creative-image-wrap {
-      width: 100%;
-      line-height: 0;
-      margin-bottom: 1.1rem;
-    }
-
-    .creative-image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
-      opacity: 0.92;
-      transition: opacity 0.2s;
-    }
-
-    .creative-image-wrap img:hover {
-      opacity: 1;
-    }
-
-    .creative-caption {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      text-align: center;
-    }
-
-    .creative-title {
-      font-size: 0.68rem;
-      color: #aaa;
+    .artist-list li {
+      font-size: 0.78rem;
+      color: #888;
       letter-spacing: 0.01em;
-      line-height: 1.5;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #0e0e0e;
     }
 
-    .creative-meta {
-      font-size: 0.58rem;
-      color: #333;
-      letter-spacing: 0.04em;
-    }
-
-    .creative-description {
-      font-size: 0.6rem;
-      color: #444;
-      line-height: 1.7;
-      margin-top: 6px;
-      max-width: 420px;
+    .artist-list li:last-child {
+      border-bottom: none;
     }
 
     footer {
@@ -158,27 +127,30 @@
   <nav>
     <a href="index.html" class="nav-link">home</a>
     <a href="people.html" class="nav-link">research group</a>
-    <a href="creative.html" class="nav-link active">creative inquiry</a>
-    <a href="art-science-exchange.html" class="nav-link">art-science exchange</a>
+    <a href="creative.html" class="nav-link">creative inquiry</a>
+    <a href="art-science-exchange.html" class="nav-link active">art-science exchange</a>
     <a href="https://paul-caradonna.com" class="nav-link">research</a>
   </nav>
 
   <main>
-    <p class="page-heading">Creative Inquiry</p>
+    <p class="page-heading">Art-Science Exchange</p>
 
-    <div class="creative-grid">
+    <p class="intro-text">The Art/Science Exchange is a long-term project that fosters genuine, bidirectional sharing among scientists and artists. Since 2013, we have been exploring how the confluence of art and science can broaden our understanding and engagement with nature.</p>
 
-      <!-- 20260320 -->
-      <div class="creative-item">
-        <div class="creative-image-wrap">
-          <img src="assets/creative/bee-diet-longsleeve-total-ecology-20260320.png" alt="On the diet diversity of wild bumble bees">
-        </div>
-        <div class="creative-caption">
-          <div class="creative-title">On the diet diversity of wild bumble bees</div>
-        </div>
-      </div>
-
-    </div>
+    <p class="section-label">Artists</p>
+    <ul class="artist-list">
+      <li>Mark Dorf</li>
+      <li>Eliza Collin</li>
+      <li>Patricia Wolf</li>
+      <li>Cassandra Croft</li>
+      <li>Erica Shapiro-Sakashita</li>
+      <li>Raina Belleau</li>
+      <li>Caleb Churchill</li>
+      <li>Brian House</li>
+      <li>Lucia Monge</li>
+      <li>Ellie Irons</li>
+      <li>Nathan Hass</li>
+    </ul>
   </main>
 
   <footer>total-ecology.net</footer>
