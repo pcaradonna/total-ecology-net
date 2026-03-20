@@ -1,15 +1,15 @@
-# Creative Output — Total Ecology
+# Creative Inquiry — Total Ecology
 
-Instructions: Add one entry per work below, separated by ---
-Place image files in: assets/creative/
-Supported fields: image (filename), title, year, medium (optional), description (optional)
+Images go in: assets/creative/
+Filename format: [description]-[YYYYMMDD].ext
+Images are displayed in reverse chronological order (newest first).
 
 ---
 
-image: image-01.jpg
-title: [Title of work]
-year: 2025
-medium: [e.g., archival pigment print, watercolor, digital]
-description: [Optional longer description or context]
+image: bee-diet-longsleeve-total-ecology-20260320.jpeg
+title: On the diet diversity of wild bumble bees
+year: 2026
+medium: long-sleeve shirt
+date: 20260320
 
 ---
