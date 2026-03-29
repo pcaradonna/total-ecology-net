@@ -147,6 +147,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      cursor: pointer;
+    }
+
+    .creative-pair:hover .creative-pair-images img {
+      opacity: 1;
     }
 
     .creative-pair-images {
@@ -165,8 +170,80 @@
       transition: opacity 0.2s;
     }
 
-    .creative-pair-images img:hover {
-      opacity: 1;
+    /* ── Modal ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.93);
+      z-index: 100;
+      overflow-y: auto;
+      cursor: pointer;
+    }
+
+    .modal-backdrop.open {
+      display: block;
+    }
+
+    .modal-content {
+      cursor: default;
+      max-width: 880px;
+      margin: 6rem auto 6rem;
+      padding: 0 2.5rem;
+    }
+
+    .modal-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+
+    .modal-images img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .modal-title {
+      font-size: 0.75rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.6rem;
+    }
+
+    .modal-body {
+      font-size: 0.62rem;
+      color: #666;
+      line-height: 1.9;
+      max-width: 680px;
+    }
+
+    .modal-body em {
+      color: #888;
+      font-style: italic;
+    }
+
+    .modal-close {
+      position: fixed;
+      top: 2rem;
+      right: 2.5rem;
+      font-size: 0.55rem;
+      color: #444;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #222;
+      padding: 4px 9px;
+      cursor: pointer;
+      background: none;
+      font-family: inherit;
+      z-index: 101;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+      border-color: #777;
     }
 
     footer {
@@ -210,7 +287,7 @@
       </div>
 
       <!-- 20250901 — perennial plants shirt, front + back -->
-      <div class="creative-pair">
+      <div class="creative-pair" id="pair-perennial" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
         <div class="creative-pair-images">
           <img src="assets/creative/perennial-plants-front-20250901.jpg" alt="Perennial Plants of the Rockies — front">
           <img src="assets/creative/perennial-plants-back-20250901.jpg" alt="Perennial Plants of the Rockies — back">
@@ -223,7 +300,41 @@
     </div>
   </main>
 
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal-perennial" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close">close</button>
+    <div class="modal-content">
+      <div class="modal-images">
+        <img src="assets/creative/perennial-plants-front-20250901.jpg" alt="Perennial Plants of the Rockies — front">
+        <img src="assets/creative/perennial-plants-back-20250901.jpg" alt="Perennial Plants of the Rockies — back">
+      </div>
+      <div class="modal-title">Perennial Plants of the Rockies</div>
+      <div class="modal-body">
+        <p><em>"Death is certain; the timing of death is uncertain"</em> (Buddhist proverb).</p>
+        <br>
+        <p>A fundamental component of biology is how long organisms live. This is because an organism's longevity is related to virtually all aspects of its ecology and evolution, from the ability to withstand environmental perturbations, to patterns of age-specific growth, survival and reproduction. Despite the importance of longevity—and for all its apparent simplicity—for many species it is unknown, imprecise, or misunderstood.</p>
+        <br>
+        <p>We are focusing on plants to ask a series of basic questions about ecological longevity: How long do perennial plants live? How best do we quantify plant lifespan? And what ecological and evolutionary factors contribute to variation in plant lifespan? To address these questions, we are using a plant demography database which includes several thousand matrix population models to calculate lifespan for 498 plant species that vary considerably in life history from across the globe. A central feature of this research is developing analytical tools to summarize key aspects of plant life history to effectively and succinctly relate different life history strategies to longevity.</p>
+      </div>
+    </div>
+  </div>
+
   <footer>total-ecology.net</footer>
+
+  <script>
+    const pair     = document.getElementById('pair-perennial');
+    const modal    = document.getElementById('modal-perennial');
+    const closeBtn = document.getElementById('modal-close');
+
+    function openModal()  { modal.classList.add('open');    document.body.style.overflow = 'hidden'; }
+    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+
+    pair.addEventListener('click', openModal);
+    pair.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
 
 </body>
 </html>
