@@ -1,0 +1,10 @@
+# On the Diet Diversity of Wild Bumble Bees
+
+## Web text
+
+[Add text here]
+
+## Figures
+
+[List figure filenames and captions here, e.g.:]
+[figure-01.jpg — Caption text]
