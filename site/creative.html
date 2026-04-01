@@ -259,7 +259,7 @@
     <div class="designs-list">
 
       <!-- Bee Diet -->
-      <div class="design-entry">
+      <div class="design-entry clickable" id="entry-bee-diet" role="button" tabindex="0" aria-label="Open On the diet diversity of wild bumble bees">
         <div class="design-images">
           <div class="design-img-wrap">
             <img src="assets/bee-diet/bee-diet-front-20260401-Background-Removed.png" alt="On the diet diversity of wild bumble bees — front">
@@ -289,7 +289,7 @@
       </div>
 
       <!-- Pediocactus Season One (black design — on white) -->
-      <div class="design-entry">
+      <div class="design-entry clickable" id="entry-pediocactus" role="button" tabindex="0" aria-label="Open Pediocactus Season One">
         <div class="design-images">
           <div class="design-img-wrap on-white">
             <img src="assets/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Pediocactus Season One — front">
@@ -304,7 +304,7 @@
       </div>
 
       <!-- Multiple Working Hypotheses (one image for now) -->
-      <div class="design-entry">
+      <div class="design-entry clickable" id="entry-hypotheses" role="button" tabindex="0" aria-label="Open Multiple Working Hypotheses">
         <div class="design-images single">
           <div class="design-img-wrap">
             <img src="assets/multiple-working-hypotheses/keep-honking-hypotheses-20260401-Background-Removed.png" alt="Multiple Working Hypotheses">
@@ -318,9 +318,49 @@
     </div>
   </main>
 
+  <!-- Bee Diet Modal -->
+  <div class="modal-backdrop" id="modal-bee-diet" role="dialog" aria-modal="true">
+    <button class="modal-close modal-close-btn">close</button>
+    <div class="modal-content">
+      <div class="modal-images">
+        <img src="assets/bee-diet/bee-diet-front-20260401-Background-Removed.png" alt="On the diet diversity of wild bumble bees — front">
+        <img src="assets/bee-diet/bee-diet-back-20260401-Background-Removed.png" alt="On the diet diversity of wild bumble bees — back">
+      </div>
+      <div class="modal-title">On the diet diversity of wild bumble bees</div>
+      <div class="modal-body">
+        <p>The northwestern grizzly bear emerges from hibernation in the spring to eat an abundance of buds and flowers, insects and salmon in the summer, and then feasts upon fruit and nuts in the fall. The adult greater sage grouse subsists on sagebrush leaves, but the young eat almost exclusively insects. Meanwhile, flower-feeding bumble bees navigate a complex and changing floral resource landscape as the needs of the colony extend across the entirety of the growing season. The composition and diversity of animal diets are essential parts of their ecology and evolution: from apex predators to insect pollinators, an animal's diet is shaped by the changing seasons, growth and development, and shifting nutritional needs. Thus, characterizing diet diversity requires a life-cycle perspective.</p>
+        <br>
+        <p>For most animals, however, our understanding remains coarse and temporally static. This limitation is especially pronounced for insects, including important and at-risk pollinators like bumble bees, where the lack of detailed, life stage-specific diet information constrains our ability to link resource use to population dynamics, community interactions, and conservation. Bumble bees are quintessential generalist foragers: species incorporate many different types of floral resources into their diets over the colony life cycle. Descriptions of wild bumble bee floral resource use have been outlined in the literature, but are limited to certain regions, or do not include observations across the entire period of foraging activity. These broad-level characterizations may overlook meaningful ecological variation, potentially obscuring diet diversity both within and across species. Knowing species and colony life stage-specific diet requirements is a fundamental step in better understanding bumble bee ecology, and targeted conservation efforts.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pediocactus Modal -->
+  <div class="modal-backdrop" id="modal-pediocactus" role="dialog" aria-modal="true">
+    <button class="modal-close modal-close-btn">close</button>
+    <div class="modal-content">
+      <div class="modal-images">
+        <img src="assets/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Pediocactus Season One — front" style="background:#fff; padding:1.2rem;">
+        <img src="assets/pediocactus-season-one/pediocactus-season-one-back-20260401-Background-Removed.png" alt="Pediocactus Season One — back" style="background:#fff; padding:1.2rem;">
+      </div>
+      <div class="modal-title">Pediocactus Season One</div>
+    </div>
+  </div>
+
+  <!-- Multiple Working Hypotheses Modal -->
+  <div class="modal-backdrop" id="modal-hypotheses" role="dialog" aria-modal="true">
+    <button class="modal-close modal-close-btn">close</button>
+    <div class="modal-content">
+      <div class="modal-images" style="grid-template-columns: 1fr; max-width: 420px;">
+        <img src="assets/multiple-working-hypotheses/keep-honking-hypotheses-20260401-Background-Removed.png" alt="Multiple Working Hypotheses">
+      </div>
+      <div class="modal-title">Multiple Working Hypotheses</div>
+    </div>
+  </div>
+
   <!-- Plant Lifespan Modal -->
   <div class="modal-backdrop" id="modal-plant-lifespan" role="dialog" aria-modal="true">
-    <button class="modal-close" id="modal-close">close</button>
+    <button class="modal-close modal-close-btn" id="modal-close">close</button>
     <div class="modal-content">
       <div class="modal-images">
         <img src="assets/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
@@ -341,18 +381,35 @@
   <footer>total-ecology.net</footer>
 
   <script>
-    const entry    = document.getElementById('entry-plant-lifespan');
-    const modal    = document.getElementById('modal-plant-lifespan');
-    const closeBtn = document.getElementById('modal-close');
+    const pairs = [
+      { entry: 'entry-bee-diet',       modal: 'modal-bee-diet'       },
+      { entry: 'entry-plant-lifespan', modal: 'modal-plant-lifespan' },
+      { entry: 'entry-pediocactus',    modal: 'modal-pediocactus'    },
+      { entry: 'entry-hypotheses',     modal: 'modal-hypotheses'     },
+    ];
 
-    function openModal()  { modal.classList.add('open');    document.body.style.overflow = 'hidden'; }
-    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+    function openModal(modal)  { modal.classList.add('open');    document.body.style.overflow = 'hidden'; }
+    function closeModal(modal) { modal.classList.remove('open'); document.body.style.overflow = ''; }
 
-    entry.addEventListener('click', openModal);
-    entry.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    pairs.forEach(({ entry: eId, modal: mId }) => {
+      const entry = document.getElementById(eId);
+      const modal = document.getElementById(mId);
+      entry.addEventListener('click', () => openModal(modal));
+      entry.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(modal); });
+      modal.addEventListener('click', e => { if (e.target === modal) closeModal(modal); });
+    });
+
+    document.querySelectorAll('.modal-close-btn, #modal-close').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.modal-backdrop.open').forEach(m => closeModal(m));
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.open').forEach(m => closeModal(m));
+      }
+    });
   </script>
 
 </body>
