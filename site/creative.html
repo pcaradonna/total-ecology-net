@@ -37,15 +37,8 @@
       padding: 4px 9px;
     }
 
-    .nav-link:hover {
-      color: #fff;
-      border-color: #777;
-    }
-
-    .nav-link.active {
-      color: #888;
-      border-color: #444;
-    }
+    .nav-link:hover { color: #fff; border-color: #777; }
+    .nav-link.active { color: #888; border-color: #444; }
 
     .site-name {
       position: fixed;
@@ -59,9 +52,7 @@
       z-index: 5;
     }
 
-    .site-name:hover {
-      color: #fff;
-    }
+    .site-name:hover { color: #fff; }
 
     main {
       padding: 7rem 2.5rem 5rem;
@@ -75,99 +66,72 @@
       margin-bottom: 4rem;
     }
 
-    .creative-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 5rem 3.5rem;
-      max-width: 1000px;
+    /* ── Design entries ── */
+    .designs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6rem;
+      max-width: 900px;
       margin: 0 auto;
-      justify-items: center;
     }
 
-    @media (max-width: 640px) {
-      .creative-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .creative-item {
+    .design-entry {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .creative-image-wrap {
-      width: 100%;
-      line-height: 0;
-      margin-bottom: 1.1rem;
-    }
-
-    .creative-image-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
-      opacity: 0.92;
-      transition: opacity 0.2s;
-    }
-
-    .creative-image-wrap img:hover {
-      opacity: 1;
-    }
-
-    .creative-caption {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      text-align: center;
-    }
-
-    .creative-title {
-      font-size: 0.68rem;
-      color: #aaa;
-      letter-spacing: 0.01em;
-      line-height: 1.5;
-    }
-
-    .creative-meta {
-      font-size: 0.58rem;
-      color: #333;
-      letter-spacing: 0.04em;
-    }
-
-    .creative-description {
-      font-size: 0.6rem;
-      color: #444;
-      line-height: 1.7;
-      margin-top: 6px;
-      max-width: 420px;
-    }
-
-    .creative-pair {
-      grid-column: 1 / -1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .design-entry.clickable {
       cursor: pointer;
     }
 
-    .creative-pair:hover .creative-pair-images img {
-      opacity: 1;
-    }
-
-    .creative-pair-images {
+    .design-images {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3.5rem;
+      gap: 3rem;
       align-items: flex-end;
       width: 100%;
     }
 
-    .creative-pair-images img {
+    .design-images.single {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      justify-self: center;
+      width: auto;
+    }
+
+    .design-img-wrap {
+      line-height: 0;
+    }
+
+    .design-img-wrap img {
       width: 100%;
       height: auto;
       display: block;
       opacity: 0.92;
       transition: opacity 0.2s;
+    }
+
+    .design-entry.clickable:hover .design-img-wrap img {
+      opacity: 1;
+    }
+
+    /* White card for dark/black designs */
+    .design-img-wrap.on-white {
+      background: #fff;
+      padding: 1.4rem;
+    }
+
+    .design-caption {
+      margin-top: 1.3rem;
+      text-align: center;
+    }
+
+    .design-title {
+      font-size: 0.68rem;
+      color: #aaa;
+      letter-spacing: 0.01em;
+      line-height: 1.5;
     }
 
     /* ── Modal ── */
@@ -181,9 +145,7 @@
       cursor: pointer;
     }
 
-    .modal-backdrop.open {
-      display: block;
-    }
+    .modal-backdrop.open { display: block; }
 
     .modal-content {
       cursor: default;
@@ -206,6 +168,13 @@
       display: block;
     }
 
+    .modal-title {
+      font-size: 0.75rem;
+      color: #ccc;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
+
     .modal-sold-out {
       display: inline-block;
       font-size: 0.52rem;
@@ -217,13 +186,6 @@
       margin-bottom: 1.6rem;
     }
 
-    .modal-title {
-      font-size: 0.75rem;
-      color: #ccc;
-      letter-spacing: 0.04em;
-      margin-bottom: 1.6rem;
-    }
-
     .modal-body {
       font-size: 0.62rem;
       color: #666;
@@ -231,10 +193,7 @@
       max-width: 680px;
     }
 
-    .modal-body em {
-      color: #888;
-      font-style: italic;
-    }
+    .modal-body em { color: #888; font-style: italic; }
 
     .modal-close {
       position: fixed;
@@ -252,10 +211,7 @@
       z-index: 101;
     }
 
-    .modal-close:hover {
-      color: #fff;
-      border-color: #777;
-    }
+    .modal-close:hover { color: #fff; border-color: #777; }
 
     footer {
       position: fixed;
@@ -267,6 +223,11 @@
       color: #1e1e1e;
       z-index: 5;
       pointer-events: none;
+    }
+
+    @media (max-width: 600px) {
+      .design-images { grid-template-columns: 1fr; }
+      .modal-images  { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -285,39 +246,75 @@
   <main>
     <p class="page-heading">Archive</p>
 
-    <div class="creative-grid">
+    <div class="designs-list">
 
-      <!-- 20260320 -->
-      <div class="creative-item">
-        <div class="creative-image-wrap">
-          <img src="assets/bee-diet/bee-diet-longsleeve-total-ecology-20260320.png" alt="On the diet diversity of wild bumble bees">
+      <!-- Bee Diet -->
+      <div class="design-entry">
+        <div class="design-images">
+          <div class="design-img-wrap">
+            <img src="assets/bee-diet/bee-diet-front-20260401-Background-Removed.png" alt="On the diet diversity of wild bumble bees — front">
+          </div>
+          <div class="design-img-wrap">
+            <img src="assets/bee-diet/bee-diet-back-20260401-Background-Removed.png" alt="On the diet diversity of wild bumble bees — back">
+          </div>
         </div>
-        <div class="creative-caption">
-          <div class="creative-title">On the diet diversity of wild bumble bees</div>
+        <div class="design-caption">
+          <div class="design-title">On the diet diversity of wild bumble bees</div>
         </div>
       </div>
 
-      <!-- 20250901 — perennial plants shirt, front + back -->
-      <div class="creative-pair" id="pair-perennial" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
-        <div class="creative-pair-images">
-          <img src="assets/plant-lifespan/perennial-plants-front-20250901.jpg" alt="Perennial Plants of the Rockies — front">
-          <img src="assets/plant-lifespan/perennial-plants-back-20250901.jpg" alt="Perennial Plants of the Rockies — back">
+      <!-- Plant Lifespan -->
+      <div class="design-entry clickable" id="entry-plant-lifespan" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
+        <div class="design-images">
+          <div class="design-img-wrap">
+            <img src="assets/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
+          </div>
+          <div class="design-img-wrap">
+            <img src="assets/plant-lifespan/perennial-plants-back-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — back">
+          </div>
         </div>
-        <div class="creative-caption" style="margin-top: 1.1rem;">
-          <div class="creative-title">Perennial Plants of the Rockies</div>
+        <div class="design-caption">
+          <div class="design-title">Perennial Plants of the Rockies</div>
+        </div>
+      </div>
+
+      <!-- Pediocactus Season One (black design — on white) -->
+      <div class="design-entry">
+        <div class="design-images">
+          <div class="design-img-wrap on-white">
+            <img src="assets/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Pediocactus Season One — front">
+          </div>
+          <div class="design-img-wrap on-white">
+            <img src="assets/pediocactus-season-one/pediocactus-season-one-back-20260401-Background-Removed.png" alt="Pediocactus Season One — back">
+          </div>
+        </div>
+        <div class="design-caption">
+          <div class="design-title">Pediocactus Season One</div>
+        </div>
+      </div>
+
+      <!-- Multiple Working Hypotheses (one image for now) -->
+      <div class="design-entry">
+        <div class="design-images single">
+          <div class="design-img-wrap">
+            <img src="assets/multiple-working-hypotheses/keep-honking-hypotheses-20260401-Background-Removed.png" alt="Multiple Working Hypotheses">
+          </div>
+        </div>
+        <div class="design-caption">
+          <div class="design-title">Multiple Working Hypotheses</div>
         </div>
       </div>
 
     </div>
   </main>
 
-  <!-- Modal -->
-  <div class="modal-backdrop" id="modal-perennial" role="dialog" aria-modal="true">
+  <!-- Plant Lifespan Modal -->
+  <div class="modal-backdrop" id="modal-plant-lifespan" role="dialog" aria-modal="true">
     <button class="modal-close" id="modal-close">close</button>
     <div class="modal-content">
       <div class="modal-images">
-        <img src="assets/plant-lifespan/perennial-plants-front-20250901.jpg" alt="Perennial Plants of the Rockies — front">
-        <img src="assets/plant-lifespan/perennial-plants-back-20250901.jpg" alt="Perennial Plants of the Rockies — back">
+        <img src="assets/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
+        <img src="assets/plant-lifespan/perennial-plants-back-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — back">
       </div>
       <div class="modal-title">Perennial Plants of the Rockies</div>
       <div class="modal-sold-out">[sold out]</div>
@@ -334,15 +331,15 @@
   <footer>total-ecology.net</footer>
 
   <script>
-    const pair     = document.getElementById('pair-perennial');
-    const modal    = document.getElementById('modal-perennial');
+    const entry    = document.getElementById('entry-plant-lifespan');
+    const modal    = document.getElementById('modal-plant-lifespan');
     const closeBtn = document.getElementById('modal-close');
 
     function openModal()  { modal.classList.add('open');    document.body.style.overflow = 'hidden'; }
     function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
 
-    pair.addEventListener('click', openModal);
-    pair.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
+    entry.addEventListener('click', openModal);
+    entry.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(); });
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
