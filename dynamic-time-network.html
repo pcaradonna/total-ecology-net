@@ -105,8 +105,8 @@
       padding: 5px 10px;
       background: #080808;
       border: 1px solid #1a1a1a;
-      color: #555;
-      opacity: 0.55;
+      color: #777;
+      opacity: 0.70;
       filter: none;
       transition: opacity 9s ease,
                   border-color 9s ease,
@@ -446,16 +446,17 @@
       const seenPairs    = new Set();
 
       week.interactions.forEach(pair => {
-        const [a, b] = pair;
+        const [a, b, weight] = pair;
         const key = a + '|||' + b;
         if (seenPairs.has(key)) return;
         seenPairs.add(key);
         connectedIds.add(a);
         connectedIds.add(b);
 
+        const strokeW = (1.0 + Math.sqrt(weight || 1) * 0.7).toFixed(2);
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('stroke', 'rgba(255, 255, 255, 0.90)');
-        line.setAttribute('stroke-width', '2');
+        line.setAttribute('stroke-width', strokeW);
         line.setAttribute('filter', 'url(#glow-line)');
         line.style.opacity    = '0';
         line.style.transition = 'none'; // no transition during initial placement
@@ -499,19 +500,33 @@
         `week ${weekIdx + 1} of ${networkData.weeks.length}  ·  ${week.label}`;
     }
 
-    // ── Week timer ────────────────────────────────────────────────────────────
+    // ── Week timer (year-aware) ───────────────────────────────────────────────
+
+    const YEAR_BREAK_MS = 4000; // extra pause between seasons
+
+    function scheduleNextWeek() {
+      if (!playing) return;
+
+      const nextIdx = weekIdx + 1;
+      if (nextIdx >= networkData.weeks.length) {
+        playing = false;
+        document.getElementById('btn-play').textContent = 'play';
+        return;
+      }
+
+      const curYear  = networkData.weeks[weekIdx].year;
+      const nextYear = networkData.weeks[nextIdx].year;
+      const delay    = (curYear !== nextYear) ? speed + YEAR_BREAK_MS : speed;
+
+      weekTimer = setTimeout(() => {
+        setWeek(nextIdx);
+        scheduleNextWeek();
+      }, delay);
+    }
 
     function startWeekTimer() {
-      clearInterval(weekTimer);
-      weekTimer = setInterval(() => {
-        if (weekIdx >= networkData.weeks.length - 1) {
-          playing = false;
-          document.getElementById('btn-play').textContent = 'play';
-          clearInterval(weekTimer);
-          return;
-        }
-        setWeek(weekIdx + 1);
-      }, speed);
+      clearTimeout(weekTimer);
+      scheduleNextWeek();
     }
 
     // ── Controls ──────────────────────────────────────────────────────────────
@@ -523,14 +538,14 @@
         if (weekIdx >= networkData.weeks.length - 1) setWeek(0);
         startWeekTimer();
       } else {
-        clearInterval(weekTimer);
+        clearTimeout(weekTimer);
       }
     });
 
     document.getElementById('btn-reset').addEventListener('click', () => {
       playing = false;
       document.getElementById('btn-play').textContent = 'play';
-      clearInterval(weekTimer);
+      clearTimeout(weekTimer);
       setWeek(0);
     });
 
