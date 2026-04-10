@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Time Network — Total Ecology</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: #fff;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+    }
+
+    nav {
+      position: fixed;
+      top: 2rem;
+      right: 2.5rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.6rem;
+    }
+
+    .nav-link {
+      font-size: 0.55rem;
+      color: #777;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid #444;
+      padding: 4px 9px;
+    }
+
+    .nav-link:hover { color: #fff; border-color: #777; }
+
+    #info-panel {
+      position: fixed;
+      top: 2rem;
+      left: 2.5rem;
+      z-index: 10;
+      max-width: 260px;
+    }
+
+    #info-toggle {
+      background: none;
+      border: 1px solid #333;
+      color: #666;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      cursor: pointer;
+    }
+
+    #info-toggle:hover { border-color: #666; color: #aaa; }
+
+    #info-body {
+      display: none;
+      margin-top: 0.6rem;
+      font-size: 0.58rem;
+      color: #666;
+      letter-spacing: 0.02em;
+      line-height: 1.7;
+      border: 1px solid #222;
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.85);
+    }
+
+    #info-body.open { display: block; }
+    #info-body em { font-style: italic; color: #888; }
+
+    #svg-lines {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #species-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .sp-label {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      font-size: 0.62rem;
+      letter-spacing: 0.02em;
+      padding: 5px 10px;
+      background: #080808;
+      border: 1px solid #1a1a1a;
+      color: #333;
+      opacity: 0.25;
+      filter: none;
+      transition: opacity 5s ease,
+                  border-color 5s ease,
+                  color 5s ease,
+                  filter 5s ease;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .sp-label.connected {
+      opacity: 1;
+    }
+
+    .sp-label.connected.pollinator {
+      color: #7AB8E8;
+      border-color: #2a5070;
+      filter: drop-shadow(0 0 5px rgba(100, 175, 235, 0.75))
+              drop-shadow(0 0 14px rgba(70, 145, 210, 0.45));
+    }
+
+    .sp-label.connected.plant {
+      color: #7DC96A;
+      border-color: #38712a;
+      filter: drop-shadow(0 0 5px rgba(110, 210, 85, 0.75))
+              drop-shadow(0 0 14px rgba(75, 175, 55, 0.45));
+    }
+
+    #controls {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 24px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #222;
+    }
+
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: 1px solid #333;
+      color: #888;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+
+    .ctrl-btn:hover { border-color: #666; color: #ccc; }
+
+    .ctrl-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.04em;
+      color: #555;
+      text-transform: uppercase;
+    }
+
+    #speed-slider {
+      width: 110px;
+      accent-color: #555;
+    }
+
+    #speed-val {
+      font-size: 0.55rem;
+      color: #555;
+      min-width: 32px;
+      text-align: right;
+    }
+
+    #week-display {
+      font-size: 0.58rem;
+      letter-spacing: 0.04em;
+      color: #555;
+      text-transform: uppercase;
+      transition: opacity 0.6s ease;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 1.6rem;
+      right: 2.5rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #222;
+      z-index: 10;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-link">home</a>
+    <a href="https://paul-caradonna.com" class="nav-link">ecological research</a>
+  </nav>
+
+  <div id="info-panel">
+    <button id="info-toggle">about</button>
+    <div id="info-body">
+      <em>Bumble bee–plant interaction networks</em><br>
+      Rocky Mountain Biological Laboratory<br>
+      Colorado · 2013–2015<br><br>
+      Species drift through space. Connections form and dissolve as the season
+      progresses from snowmelt to frost.<br><br>
+      Each node is a species. Each line is an observed interaction.
+      Pollinators in amber · plants in green.
+    </div>
+  </div>
+
+  <svg id="svg-lines"></svg>
+  <div id="species-canvas"></div>
+
+  <div id="controls">
+    <div class="ctrl-row">
+      <button class="ctrl-btn" id="btn-play">play</button>
+      <button class="ctrl-btn" id="btn-reset">reset</button>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">speed</span>
+      <input type="range" id="speed-slider" min="500" max="8000" step="250" value="3000">
+      <span id="speed-val">3.0s</span>
+    </div>
+    <div id="week-display">week 1 of 16</div>
+  </div>
+
+  <footer>total-ecology.net</footer>
+
+  <script src="assets/bumble-network-data.js"></script>
+  <script>
+    // ── Constants ─────────────────────────────────────────────────────────────
+
+    const DISSOLVE_MS = 5000;   // crossfade duration in ms
+    const PAD         = 0.09;   // collision distance in normalized space
+    const MAXV        = 0.0005; // max velocity (normalized per tick)
+
+    // ── State ─────────────────────────────────────────────────────────────────
+
+    let W = window.innerWidth;
+    let H = window.innerHeight;
+    window.addEventListener('resize', () => { W = window.innerWidth; H = window.innerHeight; });
+
+    const pos = {};             // id → {x, y, vx, vy}  (normalized 0–1)
+    let weekIdx  = 0;
+    let playing  = false;
+    let speed    = 3000;
+    let weekTimer = null;
+
+    // Lines currently tracking position updates
+    const activeLines = new Map(); // key → SVG <line>
+
+    // ── SVG glow filter setup ─────────────────────────────────────────────────
+
+    function setupSvg() {
+      const svg = document.getElementById('svg-lines');
+      const ns  = 'http://www.w3.org/2000/svg';
+
+      const defs   = document.createElementNS(ns, 'defs');
+      const filter = document.createElementNS(ns, 'filter');
+      filter.setAttribute('id', 'glow-line');
+      filter.setAttribute('x', '-40%');
+      filter.setAttribute('y', '-40%');
+      filter.setAttribute('width', '180%');
+      filter.setAttribute('height', '180%');
+
+      // Soft outer halo
+      const blur1 = document.createElementNS(ns, 'feGaussianBlur');
+      blur1.setAttribute('in', 'SourceGraphic');
+      blur1.setAttribute('stdDeviation', '5');
+      blur1.setAttribute('result', 'halo');
+
+      // Tighter inner glow
+      const blur2 = document.createElementNS(ns, 'feGaussianBlur');
+      blur2.setAttribute('in', 'SourceGraphic');
+      blur2.setAttribute('stdDeviation', '2');
+      blur2.setAttribute('result', 'core');
+
+      const merge  = document.createElementNS(ns, 'feMerge');
+      const node1  = document.createElementNS(ns, 'feMergeNode');
+      node1.setAttribute('in', 'halo');
+      const node2  = document.createElementNS(ns, 'feMergeNode');
+      node2.setAttribute('in', 'core');
+      const node3  = document.createElementNS(ns, 'feMergeNode');
+      node3.setAttribute('in', 'SourceGraphic');
+
+      merge.appendChild(node1);
+      merge.appendChild(node2);
+      merge.appendChild(node3);
+
+      filter.appendChild(blur1);
+      filter.appendChild(blur2);
+      filter.appendChild(merge);
+      defs.appendChild(filter);
+      svg.appendChild(defs);
+    }
+
+    // ── Initialize positions ──────────────────────────────────────────────────
+
+    function initPositions() {
+      networkData.species.forEach(sp => {
+        pos[sp.id] = {
+          x:  0.15 + Math.random() * 0.70,
+          y:  0.15 + Math.random() * 0.70,
+          vx: (Math.random() - 0.5) * 0.0004,
+          vy: (Math.random() - 0.5) * 0.0004
+        };
+      });
+    }
+
+    // ── Build species label divs ──────────────────────────────────────────────
+
+    function buildLabels() {
+      const container = document.getElementById('species-canvas');
+      container.innerHTML = '';
+      networkData.species.forEach(sp => {
+        const el = document.createElement('div');
+        el.id = 'sp-' + sp.id;
+        el.className = 'sp-label ' + sp.type;
+        el.textContent = sp.name;
+        container.appendChild(el);
+      });
+    }
+
+    // ── Physics tick ──────────────────────────────────────────────────────────
+
+    function physicsTick() {
+      const ids = Object.keys(pos);
+
+      ids.forEach(id => {
+        const p = pos[id];
+        let {x, y, vx, vy} = p;
+
+        x += vx;
+        y += vy;
+
+        // Boundary soft bounce
+        if (x < 0.08 || x > 0.92) {
+          vx = -vx * 0.6;
+          x  = Math.max(0.08, Math.min(0.92, x));
+        }
+        if (y < 0.08 || y > 0.92) {
+          vy = -vy * 0.6;
+          y  = Math.max(0.08, Math.min(0.92, y));
+        }
+
+        // Repulsion from nearby nodes
+        ids.forEach(oid => {
+          if (oid === id) return;
+          const o = pos[oid];
+          const dx = x - o.x, dy = y - o.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < PAD && dist > 0) {
+            const ang = Math.atan2(dy, dx);
+            vx += Math.cos(ang) * 0.0008;
+            vy += Math.sin(ang) * 0.0008;
+          }
+        });
+
+        // Organic perturbation
+        vx += (Math.random() - 0.5) * 0.00004;
+        vy += (Math.random() - 0.5) * 0.00004;
+
+        // Velocity cap
+        const spd = Math.sqrt(vx * vx + vy * vy);
+        if (spd > MAXV) { vx = vx / spd * MAXV; vy = vy / spd * MAXV; }
+
+        pos[id] = {x, y, vx, vy};
+      });
+
+      render();
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
+
+    function updateLinePos(line, key) {
+      const sep = key.indexOf('|||');
+      const a = key.slice(0, sep), b = key.slice(sep + 3);
+      const pa = pos[a], pb = pos[b];
+      if (pa && pb) {
+        line.setAttribute('x1', pa.x * W);
+        line.setAttribute('y1', pa.y * H);
+        line.setAttribute('x2', pb.x * W);
+        line.setAttribute('y2', pb.y * H);
+      }
+    }
+
+    function render() {
+      networkData.species.forEach(sp => {
+        const el = document.getElementById('sp-' + sp.id);
+        if (!el) return;
+        const p = pos[sp.id];
+        el.style.left = (p.x * 100) + '%';
+        el.style.top  = (p.y * 100) + '%';
+      });
+
+      activeLines.forEach(updateLinePos);
+    }
+
+    // ── Week update with crossfade ────────────────────────────────────────────
+
+    function setWeek(idx) {
+      weekIdx = idx;
+      const svg  = document.getElementById('svg-lines');
+      const week = networkData.weeks[weekIdx];
+
+      // ─ Fade out old lines ─
+      // Move to a snapshot so render() stops tracking them
+      const oldLines = new Map(activeLines);
+      activeLines.clear();
+
+      oldLines.forEach(line => {
+        line.style.transition = `opacity ${DISSOLVE_MS}ms ease`;
+        line.style.opacity    = '0';
+      });
+
+      // Remove from DOM once faded
+      setTimeout(() => {
+        oldLines.forEach(line => {
+          if (line.parentNode) line.parentNode.removeChild(line);
+        });
+      }, DISSOLVE_MS + 100);
+
+      // ─ Build new lines ─
+      const connectedIds = new Set();
+      const seenPairs    = new Set();
+
+      week.interactions.forEach(pair => {
+        const [a, b] = pair;
+        const key = a + '|||' + b;
+        if (seenPairs.has(key)) return;
+        seenPairs.add(key);
+        connectedIds.add(a);
+        connectedIds.add(b);
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('stroke', 'rgba(255, 255, 255, 0.90)');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('filter', 'url(#glow-line)');
+        line.style.opacity    = '0';
+        line.style.transition = 'none'; // no transition during initial placement
+
+        // Set initial position before fading in
+        const pa = pos[a], pb = pos[b];
+        if (pa && pb) {
+          line.setAttribute('x1', pa.x * W);
+          line.setAttribute('y1', pa.y * H);
+          line.setAttribute('x2', pb.x * W);
+          line.setAttribute('y2', pb.y * H);
+        }
+
+        svg.appendChild(line);
+        activeLines.set(key, line);
+      });
+
+      // Trigger fade-in on next paint (double-rAF ensures transition fires)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          activeLines.forEach(line => {
+            line.style.transition = `opacity ${DISSOLVE_MS}ms ease`;
+            line.style.opacity    = '1';
+          });
+        });
+      });
+
+      // ─ Update species connected state ─
+      networkData.species.forEach(sp => {
+        const el = document.getElementById('sp-' + sp.id);
+        if (!el) return;
+        if (connectedIds.has(sp.id)) {
+          el.classList.add('connected');
+        } else {
+          el.classList.remove('connected');
+        }
+      });
+
+      // ─ Week label ─
+      document.getElementById('week-display').textContent =
+        `week ${weekIdx + 1} of ${networkData.weeks.length}  ·  ${week.label}`;
+    }
+
+    // ── Week timer ────────────────────────────────────────────────────────────
+
+    function startWeekTimer() {
+      clearInterval(weekTimer);
+      weekTimer = setInterval(() => {
+        if (weekIdx >= networkData.weeks.length - 1) {
+          playing = false;
+          document.getElementById('btn-play').textContent = 'play';
+          clearInterval(weekTimer);
+          return;
+        }
+        setWeek(weekIdx + 1);
+      }, speed);
+    }
+
+    // ── Controls ──────────────────────────────────────────────────────────────
+
+    document.getElementById('btn-play').addEventListener('click', () => {
+      playing = !playing;
+      document.getElementById('btn-play').textContent = playing ? 'pause' : 'play';
+      if (playing) {
+        if (weekIdx >= networkData.weeks.length - 1) setWeek(0);
+        startWeekTimer();
+      } else {
+        clearInterval(weekTimer);
+      }
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      playing = false;
+      document.getElementById('btn-play').textContent = 'play';
+      clearInterval(weekTimer);
+      setWeek(0);
+    });
+
+    document.getElementById('speed-slider').addEventListener('input', e => {
+      speed = Number(e.target.value);
+      document.getElementById('speed-val').textContent = (speed / 1000).toFixed(1) + 's';
+      if (playing) startWeekTimer();
+    });
+
+    document.getElementById('info-toggle').addEventListener('click', () => {
+      document.getElementById('info-body').classList.toggle('open');
+    });
+
+    // ── Boot ──────────────────────────────────────────────────────────────────
+
+    setupSvg();
+    initPositions();
+    buildLabels();
+    setWeek(0);
+    setInterval(physicsTick, 50);
+  </script>
+
+</body>
+</html>
