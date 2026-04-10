@@ -453,10 +453,9 @@
         connectedIds.add(a);
         connectedIds.add(b);
 
-        const strokeW = (1.0 + Math.sqrt(weight || 1) * 0.7).toFixed(2);
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('stroke', 'rgba(255, 255, 255, 0.90)');
-        line.setAttribute('stroke-width', strokeW);
+        line.setAttribute('stroke', 'rgba(255, 255, 255, 0.92)');
+        line.setAttribute('stroke-width', '2.5');
         line.setAttribute('filter', 'url(#glow-line)');
         line.style.opacity    = '0';
         line.style.transition = 'none'; // no transition during initial placement
