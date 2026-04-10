@@ -104,6 +104,26 @@
       z-index: 0;
       transform-origin: center center;
     }
+
+    #side-tab {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      writing-mode: vertical-rl;
+      font-size: 0.55rem;
+      color: #777;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid #444;
+      border-right: none;
+      padding: 12px 5px;
+      background: #000;
+    }
+
+    #side-tab:hover { color: #fff; border-color: #777; }
   </style>
 </head>
 <body>
@@ -114,6 +134,7 @@
   <a href="art-science-exchange.html" class="nav-link">art-science exchange</a>
   <a href="dynamic-time-network.html" class="nav-link">dynamic time network</a>
 </nav>
+<a href="dynamic-time-network.html" id="side-tab">Dynamic Time Network</a>
 <canvas id="ghost-trail"></canvas>
   <img id="dvd-logo" src="assets/total-ecology-logo/logo.png" alt="">
   <main style="position: relative; z-index: 1;">
