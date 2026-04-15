@@ -15,6 +15,8 @@ The first single, Inflorescence, the scientific name for the floral display that
 
 "With this music, I hope to inspire others to slow down, appreciate plants and admire their remarkable fortitude and resilience. With such appreciation, I hope this further inspires us to protect and conserve these photosynthesizing wonders and their ecosystems for as long as the earth will hold them." - Patricia Wolf
 
+This work was supported by the Art-Science Exchange Project at the Rocky Mountain Biological Laboratory (National Science Foundation Grant DEB-2337426).
+
 ## Images
 
 yarrow casette patricia wolf.jpg — cassette photo (shown on main page and in modal)
