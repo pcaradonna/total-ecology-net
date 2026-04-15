@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing — Total Ecology</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+    }
+
+    .site-name {
+      position: fixed;
+      top: 2rem;
+      left: 2.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #444;
+      text-decoration: none;
+      z-index: 5;
+    }
+
+    .site-name:hover { color: #fff; }
+
+    nav {
+      position: fixed;
+      top: 2rem;
+      right: 2.5rem;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.6rem;
+    }
+
+    .nav-link {
+      font-size: 0.55rem;
+      color: #777;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid #444;
+      padding: 4px 9px;
+    }
+
+    .nav-link:hover { color: #fff; border-color: #777; }
+    .nav-link.active { color: #888; border-color: #444; }
+
+    main {
+      padding: 7rem 2.5rem 5rem;
+      max-width: 760px;
+    }
+
+    .page-heading {
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2a2a2a;
+      margin-bottom: 4rem;
+    }
+
+    .essay-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .essay {
+      display: block;
+      text-decoration: none;
+      padding: 2rem 0;
+      border-bottom: 1px solid #111;
+    }
+
+    .essay:first-child { border-top: 1px solid #111; }
+
+    .essay:hover .essay-title { color: #fff; }
+
+    .essay-title {
+      font-size: 0.82rem;
+      color: #bbb;
+      letter-spacing: 0.01em;
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+      transition: color 0.15s;
+    }
+
+    .essay-meta {
+      font-size: 0.56rem;
+      color: #555;
+      letter-spacing: 0.04em;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 2rem;
+      right: 2.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      color: #1e1e1e;
+      z-index: 5;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="site-name" href="index.html">Total Ecology</a>
+
+  <nav>
+    <a href="people.html" class="nav-link" style="display:none">people/group</a>
+    <a href="creative.html" class="nav-link">creative production</a>
+    <a href="writing.html" class="nav-link active">writing</a>
+    <a href="https://paul-caradonna.com" class="nav-link">ecological research</a>
+    <a href="art-science-exchange.html" class="nav-link">art-science exchange</a>
+  </nav>
+
+  <main>
+    <p class="page-heading">Writing</p>
+
+    <div class="essay-list">
+
+      <a class="essay"
+         href="assets/writing-cultivating-curiosity/Frontiers in Ecol   Environ - 2025 - CaraDonna - Cultivating curiosity.pdf"
+         target="_blank" rel="noopener">
+        <div class="essay-title">Cultivating Curiosity</div>
+        <div class="essay-meta">Frontiers in Ecology and the Environment &middot; 2025</div>
+      </a>
+
+      <a class="essay"
+         href="assets/writing-art-science-exchange/caradonna_dorf2023plantsciencebulletinartscience_69_3_2023.pdf"
+         target="_blank" rel="noopener">
+        <div class="essay-title">Can the collaboration of science and art broaden our understanding of nature?</div>
+        <div class="essay-meta">Plant Science Bulletin &middot; 2023</div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>total-ecology.net</footer>
+
+</body>
+</html>
