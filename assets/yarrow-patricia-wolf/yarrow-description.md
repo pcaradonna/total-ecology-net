@@ -11,7 +11,7 @@ She worked closely with ecologists Dr Paul CaraDonna, Dr Amy Iler, Dr Jane Ogilv
 
 Each track on Yarrow looks at a different part of a plant's life. 
 The songs touch on the conditions that plants need to grow, the quiet life of roots, how flowers attract pollinators, and the strength of seeds. 
-The first single, Inflorescence, the scientific name for the floral display that a plant makes in an effort to reproduce, captures this event in song. The music slowly builds layers, reflecting the album's overall feel. The album ends with the majestic Adapted for Extreme Conditions, and the entire b-side features Patricia's field recordings from around Gothic, Colorado, and a guided meditation by Dr Paul CaraDonna, whose research inspired the project, inviting listeners to tune into the sounds and activities of the ecosystem.
+The entire b-side features Patricia's field recordings from around Gothic, Colorado, and a guided meditation by Dr Paul CaraDonna, whose research inspired the project, inviting listeners to tune into the sounds and activities of the ecosystem.
 
 "With this music, I hope to inspire others to slow down, appreciate plants and admire their remarkable fortitude and resilience. With such appreciation, I hope this further inspires us to protect and conserve these photosynthesizing wonders and their ecosystems for as long as the earth will hold them." - Patricia Wolf
 
