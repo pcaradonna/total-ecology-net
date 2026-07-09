@@ -107,7 +107,7 @@
       color: #fff;
       opacity: 0;
       filter: none;
-      transition: opacity 5s ease, filter 5s ease;
+      transition: opacity 8s ease, filter 8s ease;
       pointer-events: none;
       user-select: none;
     }
@@ -140,7 +140,7 @@
     <div id="info-body">
       <em>Bumble bee–plant interaction networks</em><br>
       Rocky Mountain Biological Laboratory<br>
-      Colorado · 2024<br><br>
+      Colorado · 2019<br><br>
       Species drift through space. Connections form and dissolve as the season
       progresses from snowmelt to frost.<br><br>
       Each node is a species. Each line is an observed interaction.
@@ -163,8 +163,24 @@
 
     // ── Dataset (single year, looped) ─────────────────────────────────────────
 
-    const LOOP_YEAR = 2024;
-    const weeks     = networkData.weeks.filter(w => w.year === LOOP_YEAR);
+    const LOOP_YEAR = 2019;
+    const TOP_BEES  = new Set([
+      'bee_flavifrons', 'bee_bifarius',   'bee_appositus',  'bee_rufocinctus',
+      'bee_insularis',  'bee_mixtus',     'bee_sylvicola',  'bee_occidentalis',
+      'bee_nevadensis', 'bee_californicus'
+    ]);
+    const species = networkData.species.filter(sp =>
+      sp.type === 'plant' || TOP_BEES.has(sp.id)
+    );
+    const weeks = networkData.weeks
+      .filter(w => w.year === LOOP_YEAR)
+      .map(w => ({
+        ...w,
+        interactions: w.interactions.filter(([a, b]) =>
+          !(a.startsWith('bee_') && !TOP_BEES.has(a)) &&
+          !(b.startsWith('bee_') && !TOP_BEES.has(b))
+        )
+      }));
 
     // ── State ─────────────────────────────────────────────────────────────────
 
@@ -199,7 +215,7 @@
     // ── Initialize positions ──────────────────────────────────────────────────
 
     function initPositions() {
-      networkData.species.forEach(sp => {
+      species.forEach(sp => {
         pos[sp.id] = {
           x:     0.15 + Math.random() * 0.70,
           y:     0.15 + Math.random() * 0.70,
@@ -216,7 +232,7 @@
       const fg = document.getElementById('fg-canvas');
       bg.innerHTML = '';
       fg.innerHTML = '';
-      networkData.species.forEach(sp => {
+      species.forEach(sp => {
         const name = sp.type === 'pollinator' ? sp.name.replace('B. ', 'Bombus ') : sp.name;
 
         const bgEl = document.createElement('div');
@@ -272,7 +288,7 @@
 
     function render() {
       // Update label positions (both layers)
-      networkData.species.forEach(sp => {
+      species.forEach(sp => {
         const p  = pos[sp.id];
         const bg = document.getElementById('bg-' + sp.id);
         const fg = document.getElementById('fg-' + sp.id);
@@ -343,7 +359,7 @@
       });
 
       // Update foreground label visibility (no DOM moves — transitions fire correctly)
-      networkData.species.forEach(sp => {
+      species.forEach(sp => {
         const fg = document.getElementById('fg-' + sp.id);
         if (fg) fg.classList.toggle('connected', connectedIds.has(sp.id));
       });
@@ -352,15 +368,37 @@
 
     // ── Week timer (looping) ──────────────────────────────────────────────────
 
-    const YEAR_BREAK_MS = 4000;
+    const SEASON_FADE_MS = 8000;
+
+    function fadeOutAndRestart() {
+      // Fade all active lines to zero
+      const now = Date.now();
+      lineStates.forEach((state, key) => {
+        lineStates.set(key, { startOpacity: getLineOpacity(state), targetOpacity: 0, startTime: now });
+      });
+      // Fade all active fg labels
+      species.forEach(sp => {
+        const fg = document.getElementById('fg-' + sp.id);
+        if (fg) fg.classList.remove('connected');
+      });
+      // After fade completes, restart cleanly
+      weekTimer = setTimeout(() => {
+        lineStates.clear();
+        setWeek(0);
+        scheduleNextWeek();
+      }, SEASON_FADE_MS + 200);
+    }
 
     function scheduleNextWeek() {
       const nextIdx = (weekIdx + 1) % weeks.length;
-      const delay   = nextIdx === 0 ? speed + YEAR_BREAK_MS : speed;
       weekTimer = setTimeout(() => {
-        setWeek(nextIdx);
-        scheduleNextWeek();
-      }, delay);
+        if (nextIdx === 0) {
+          fadeOutAndRestart();
+        } else {
+          setWeek(nextIdx);
+          scheduleNextWeek();
+        }
+      }, speed);
     }
 
     document.getElementById('info-toggle').addEventListener('click', () => {
