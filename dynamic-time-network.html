@@ -20,28 +20,6 @@
       font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
     }
 
-    nav {
-      position: fixed;
-      top: 2rem;
-      right: 2.5rem;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.6rem;
-    }
-
-    .nav-link {
-      font-size: 0.55rem;
-      color: #777;
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border: 1px solid #444;
-      padding: 4px 9px;
-    }
-
-    .nav-link:hover { color: #fff; border-color: #777; }
 
     #info-panel {
       position: fixed;
@@ -80,7 +58,22 @@
     #info-body.open { display: block; }
     #info-body em { font-style: italic; color: #888; }
 
-    #svg-lines {
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #line-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #fg-canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -88,15 +81,21 @@
       z-index: 3;
     }
 
-    #species-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+    .sp-label-bg {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      font-size: 0.62rem;
+      letter-spacing: 0.02em;
+      padding: 5px 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #2a2a2a;
       pointer-events: none;
-      z-index: 2;
+      user-select: none;
     }
 
-    .sp-label {
+    .sp-label-fg {
       position: absolute;
       transform: translate(-50%, -50%);
       white-space: nowrap;
@@ -104,98 +103,21 @@
       letter-spacing: 0.02em;
       padding: 5px 10px;
       background: #080808;
-      border: 1px solid #1a1a1a;
-      color: #777;
-      opacity: 0.70;
+      border: 1px solid #444;
+      color: #fff;
+      opacity: 0;
       filter: none;
-      transition: opacity 9s ease,
-                  border-color 9s ease,
-                  color 9s ease,
-                  filter 9s ease;
+      transition: opacity 5s ease, filter 5s ease;
       pointer-events: none;
       user-select: none;
     }
 
-    .sp-label.connected {
+    .sp-label-fg.connected {
       opacity: 1;
-      z-index: 10;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))
+              drop-shadow(0 0 14px rgba(255, 255, 255, 0.2));
     }
 
-    .sp-label.connected.pollinator {
-      color: #7AB8E8;
-      border-color: #2a5070;
-      filter: drop-shadow(0 0 5px rgba(100, 175, 235, 0.75))
-              drop-shadow(0 0 14px rgba(70, 145, 210, 0.45));
-    }
-
-    .sp-label.connected.plant {
-      color: #7DC96A;
-      border-color: #38712a;
-      filter: drop-shadow(0 0 5px rgba(110, 210, 85, 0.75))
-              drop-shadow(0 0 14px rgba(75, 175, 55, 0.45));
-    }
-
-    #controls {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 24px;
-      background: rgba(0,0,0,0.7);
-      border: 1px solid #222;
-    }
-
-    .ctrl-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .ctrl-btn {
-      background: none;
-      border: 1px solid #333;
-      color: #888;
-      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
-      font-size: 0.58rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 5px 12px;
-      cursor: pointer;
-    }
-
-    .ctrl-btn:hover { border-color: #666; color: #ccc; }
-
-    .ctrl-label {
-      font-size: 0.55rem;
-      letter-spacing: 0.04em;
-      color: #555;
-      text-transform: uppercase;
-    }
-
-    #speed-slider {
-      width: 110px;
-      accent-color: #555;
-    }
-
-    #speed-val {
-      font-size: 0.55rem;
-      color: #555;
-      min-width: 32px;
-      text-align: right;
-    }
-
-    #week-display {
-      font-size: 0.58rem;
-      letter-spacing: 0.04em;
-      color: #555;
-      text-transform: uppercase;
-      transition: opacity 0.6s ease;
-    }
 
     footer {
       position: fixed;
@@ -212,39 +134,23 @@
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-link">home</a>
-    <a href="https://paul-caradonna.com" class="nav-link">ecological research</a>
-  </nav>
 
   <div id="info-panel">
     <button id="info-toggle">about</button>
     <div id="info-body">
       <em>Bumble bee–plant interaction networks</em><br>
       Rocky Mountain Biological Laboratory<br>
-      Colorado · 2015–2024<br><br>
+      Colorado · 2024<br><br>
       Species drift through space. Connections form and dissolve as the season
       progresses from snowmelt to frost.<br><br>
       Each node is a species. Each line is an observed interaction.
-      Pollinators in amber · plants in green.
     </div>
   </div>
 
-  <svg id="svg-lines"></svg>
-  <div id="species-canvas"></div>
+  <div id="bg-canvas"></div>
+  <canvas id="line-canvas"></canvas>
+  <div id="fg-canvas"></div>
 
-  <div id="controls">
-    <div class="ctrl-row">
-      <button class="ctrl-btn" id="btn-play">play</button>
-      <button class="ctrl-btn" id="btn-reset">reset</button>
-    </div>
-    <div class="ctrl-row">
-      <span class="ctrl-label">speed</span>
-      <input type="range" id="speed-slider" min="500" max="8000" step="250" value="3000">
-      <span id="speed-val">3.0s</span>
-    </div>
-    <div id="week-display">week 1 of 16</div>
-  </div>
 
   <footer>total-ecology.net</footer>
 
@@ -252,68 +158,42 @@
   <script>
     // ── Constants ─────────────────────────────────────────────────────────────
 
-    const DISSOLVE_MS = 9000;   // crossfade duration in ms
-    const PAD         = 0.09;   // collision distance in normalized space
-    const MAXV        = 0.0005; // max velocity (normalized per tick)
+    const DISSOLVE_MS = 6000;   // line fade duration in ms
+    const MARGIN      = 0.10;   // boundary margin (normalized)
+
+    // ── Dataset (single year, looped) ─────────────────────────────────────────
+
+    const LOOP_YEAR = 2024;
+    const weeks     = networkData.weeks.filter(w => w.year === LOOP_YEAR);
 
     // ── State ─────────────────────────────────────────────────────────────────
 
     let W = window.innerWidth;
     let H = window.innerHeight;
-    window.addEventListener('resize', () => { W = window.innerWidth; H = window.innerHeight; });
 
-    const pos = {};             // id → {x, y, vx, vy}  (normalized 0–1)
-    let weekIdx  = 0;
-    let playing  = false;
-    let speed    = 3000;
+    const pos = {};  // id → {x, y, vx, vy}  (normalized 0–1)
+    let weekIdx   = 0;
     let weekTimer = null;
+    const speed   = 2000;
 
-    // Lines currently tracking position updates
-    const activeLines = new Map(); // key → SVG <line>
+    // Line states for canvas drawing: key → { startOpacity, targetOpacity, startTime }
+    const lineStates = new Map();
 
-    // ── SVG glow filter setup ─────────────────────────────────────────────────
+    let ctx;
 
-    function setupSvg() {
-      const svg = document.getElementById('svg-lines');
-      const ns  = 'http://www.w3.org/2000/svg';
+    // ── Canvas setup ──────────────────────────────────────────────────────────
 
-      const defs   = document.createElementNS(ns, 'defs');
-      const filter = document.createElementNS(ns, 'filter');
-      filter.setAttribute('id', 'glow-line');
-      filter.setAttribute('x', '-40%');
-      filter.setAttribute('y', '-40%');
-      filter.setAttribute('width', '180%');
-      filter.setAttribute('height', '180%');
-
-      // Soft outer halo
-      const blur1 = document.createElementNS(ns, 'feGaussianBlur');
-      blur1.setAttribute('in', 'SourceGraphic');
-      blur1.setAttribute('stdDeviation', '5');
-      blur1.setAttribute('result', 'halo');
-
-      // Tighter inner glow
-      const blur2 = document.createElementNS(ns, 'feGaussianBlur');
-      blur2.setAttribute('in', 'SourceGraphic');
-      blur2.setAttribute('stdDeviation', '2');
-      blur2.setAttribute('result', 'core');
-
-      const merge  = document.createElementNS(ns, 'feMerge');
-      const node1  = document.createElementNS(ns, 'feMergeNode');
-      node1.setAttribute('in', 'halo');
-      const node2  = document.createElementNS(ns, 'feMergeNode');
-      node2.setAttribute('in', 'core');
-      const node3  = document.createElementNS(ns, 'feMergeNode');
-      node3.setAttribute('in', 'SourceGraphic');
-
-      merge.appendChild(node1);
-      merge.appendChild(node2);
-      merge.appendChild(node3);
-
-      filter.appendChild(blur1);
-      filter.appendChild(blur2);
-      filter.appendChild(merge);
-      defs.appendChild(filter);
-      svg.appendChild(defs);
+    function setupCanvas() {
+      const canvas = document.getElementById('line-canvas');
+      canvas.width  = W;
+      canvas.height = H;
+      ctx = canvas.getContext('2d');
+      window.addEventListener('resize', () => {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width  = W;
+        canvas.height = H;
+      });
     }
 
     // ── Initialize positions ──────────────────────────────────────────────────
@@ -321,239 +201,165 @@
     function initPositions() {
       networkData.species.forEach(sp => {
         pos[sp.id] = {
-          x:  0.15 + Math.random() * 0.70,
-          y:  0.15 + Math.random() * 0.70,
-          vx: (Math.random() - 0.5) * 0.0004,
-          vy: (Math.random() - 0.5) * 0.0004
+          x:     0.15 + Math.random() * 0.70,
+          y:     0.15 + Math.random() * 0.70,
+          angle: Math.random() * Math.PI * 2,
+          speed: 0.000038 + Math.random() * 0.000025
         };
       });
     }
 
-    // ── Build species label divs ──────────────────────────────────────────────
+    // ── Build labels (background + foreground pairs) ──────────────────────────
 
     function buildLabels() {
-      const container = document.getElementById('species-canvas');
-      container.innerHTML = '';
+      const bg = document.getElementById('bg-canvas');
+      const fg = document.getElementById('fg-canvas');
+      bg.innerHTML = '';
+      fg.innerHTML = '';
       networkData.species.forEach(sp => {
-        const el = document.createElement('div');
-        el.id = 'sp-' + sp.id;
-        el.className = 'sp-label ' + sp.type;
-        el.textContent = sp.name;
-        container.appendChild(el);
+        const bgEl = document.createElement('div');
+        bgEl.id          = 'bg-' + sp.id;
+        bgEl.className   = 'sp-label-bg';
+        bgEl.textContent = sp.name;
+        bg.appendChild(bgEl);
+
+        const fgEl = document.createElement('div');
+        fgEl.id          = 'fg-' + sp.id;
+        fgEl.className   = 'sp-label-fg';
+        fgEl.textContent = sp.name;
+        fg.appendChild(fgEl);
       });
     }
 
     // ── Physics tick ──────────────────────────────────────────────────────────
 
     function physicsTick() {
-      const ids = Object.keys(pos);
-
-      ids.forEach(id => {
+      Object.keys(pos).forEach(id => {
         const p = pos[id];
-        let {x, y, vx, vy} = p;
+        let {x, y, angle, speed} = p;
 
-        x += vx;
-        y += vy;
+        // Slowly curve the heading (correlated random walk — smooth arcs, no jitter)
+        angle += (Math.random() - 0.5) * 0.010;
 
-        // Boundary soft bounce
-        if (x < 0.08 || x > 0.92) {
-          vx = -vx * 0.6;
-          x  = Math.max(0.08, Math.min(0.92, x));
+        // Steer away from margins — smoothly bend heading toward center
+        if (x < MARGIN || x > 1 - MARGIN || y < MARGIN || y > 1 - MARGIN) {
+          const toCenter = Math.atan2(0.5 - y, 0.5 - x);
+          let diff = toCenter - angle;
+          while (diff >  Math.PI) diff -= 2 * Math.PI;
+          while (diff < -Math.PI) diff += 2 * Math.PI;
+          angle += diff * 0.025;
         }
-        if (y < 0.08 || y > 0.92) {
-          vy = -vy * 0.6;
-          y  = Math.max(0.08, Math.min(0.92, y));
-        }
 
-        // Repulsion from nearby nodes
-        ids.forEach(oid => {
-          if (oid === id) return;
-          const o = pos[oid];
-          const dx = x - o.x, dy = y - o.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < PAD && dist > 0) {
-            const ang = Math.atan2(dy, dx);
-            vx += Math.cos(ang) * 0.0008;
-            vy += Math.sin(ang) * 0.0008;
-          }
-        });
+        x = Math.max(0.03, Math.min(0.97, x + Math.cos(angle) * speed));
+        y = Math.max(0.03, Math.min(0.97, y + Math.sin(angle) * speed));
 
-        // Organic perturbation
-        vx += (Math.random() - 0.5) * 0.00004;
-        vy += (Math.random() - 0.5) * 0.00004;
-
-        // Velocity cap
-        const spd = Math.sqrt(vx * vx + vy * vy);
-        if (spd > MAXV) { vx = vx / spd * MAXV; vy = vy / spd * MAXV; }
-
-        pos[id] = {x, y, vx, vy};
+        pos[id] = {x, y, angle, speed};
       });
 
       render();
     }
 
+    // ── Line opacity helper ───────────────────────────────────────────────────
+
+    function getLineOpacity(state) {
+      const t = Math.min(1, (Date.now() - state.startTime) / DISSOLVE_MS);
+      return state.startOpacity + (state.targetOpacity - state.startOpacity) * t;
+    }
+
     // ── Render ────────────────────────────────────────────────────────────────
 
-    function updateLinePos(line, key) {
-      const sep = key.indexOf('|||');
-      const a = key.slice(0, sep), b = key.slice(sep + 3);
-      const pa = pos[a], pb = pos[b];
-      if (pa && pb) {
-        line.setAttribute('x1', pa.x * W);
-        line.setAttribute('y1', pa.y * H);
-        line.setAttribute('x2', pb.x * W);
-        line.setAttribute('y2', pb.y * H);
-      }
-    }
-
     function render() {
+      // Update label positions (both layers)
       networkData.species.forEach(sp => {
-        const el = document.getElementById('sp-' + sp.id);
-        if (!el) return;
-        const p = pos[sp.id];
-        el.style.left = (p.x * 100) + '%';
-        el.style.top  = (p.y * 100) + '%';
+        const p  = pos[sp.id];
+        const bg = document.getElementById('bg-' + sp.id);
+        const fg = document.getElementById('fg-' + sp.id);
+        const left = (p.x * 100) + '%';
+        const top  = (p.y * 100) + '%';
+        if (bg) { bg.style.left = left; bg.style.top = top; }
+        if (fg) { fg.style.left = left; fg.style.top = top; }
       });
 
-      activeLines.forEach(updateLinePos);
+      // Draw lines on canvas
+      ctx.clearRect(0, 0, W, H);
+      const toDelete = [];
+      lineStates.forEach((state, key) => {
+        const opacity = getLineOpacity(state);
+        if (opacity <= 0.004 && state.targetOpacity === 0) {
+          toDelete.push(key);
+          return;
+        }
+        const sep = key.indexOf('|||');
+        const a   = key.slice(0, sep);
+        const b   = key.slice(sep + 3);
+        const pa  = pos[a], pb = pos[b];
+        if (!pa || !pb) return;
+        ctx.beginPath();
+        ctx.moveTo(pa.x * W, pa.y * H);
+        ctx.lineTo(pb.x * W, pb.y * H);
+        ctx.strokeStyle = `rgba(255,255,255,${opacity.toFixed(3)})`;
+        ctx.lineWidth   = 2.5;
+        ctx.stroke();
+      });
+      toDelete.forEach(k => lineStates.delete(k));
     }
 
-    // ── Week update with crossfade ────────────────────────────────────────────
+    // ── Week update ───────────────────────────────────────────────────────────
 
     function setWeek(idx) {
       weekIdx = idx;
-      const svg  = document.getElementById('svg-lines');
-      const week = networkData.weeks[weekIdx];
+      const now  = Date.now();
+      const week = weeks[weekIdx];
 
-      // ─ Fade out old lines ─
-      // Move to a snapshot so render() stops tracking them
-      const oldLines = new Map(activeLines);
-      activeLines.clear();
-
-      oldLines.forEach(line => {
-        line.style.transition = `opacity ${DISSOLVE_MS}ms ease`;
-        line.style.opacity    = '0';
-      });
-
-      // Remove from DOM once faded
-      setTimeout(() => {
-        oldLines.forEach(line => {
-          if (line.parentNode) line.parentNode.removeChild(line);
-        });
-      }, DISSOLVE_MS + 100);
-
-      // ─ Build new lines ─
+      // Build new interaction key set
+      const newKeys      = new Set();
       const connectedIds = new Set();
-      const seenPairs    = new Set();
-
       week.interactions.forEach(pair => {
-        const [a, b, weight] = pair;
-        const key = a + '|||' + b;
-        if (seenPairs.has(key)) return;
-        seenPairs.add(key);
-        connectedIds.add(a);
-        connectedIds.add(b);
+        const key = pair[0] + '|||' + pair[1];
+        newKeys.add(key);
+        connectedIds.add(pair[0]);
+        connectedIds.add(pair[1]);
+      });
 
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('stroke', 'rgba(255, 255, 255, 0.92)');
-        line.setAttribute('stroke-width', '2.5');
-        line.setAttribute('filter', 'url(#glow-line)');
-        line.style.opacity    = '0';
-        line.style.transition = 'none'; // no transition during initial placement
-
-        // Set initial position before fading in
-        const pa = pos[a], pb = pos[b];
-        if (pa && pb) {
-          line.setAttribute('x1', pa.x * W);
-          line.setAttribute('y1', pa.y * H);
-          line.setAttribute('x2', pb.x * W);
-          line.setAttribute('y2', pb.y * H);
+      // Fade out lines leaving this week
+      lineStates.forEach((state, key) => {
+        if (!newKeys.has(key)) {
+          const cur = getLineOpacity(state);
+          lineStates.set(key, { startOpacity: cur, targetOpacity: 0, startTime: now });
         }
-
-        svg.appendChild(line);
-        activeLines.set(key, line);
       });
 
-      // Trigger fade-in on next paint (double-rAF ensures transition fires)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          activeLines.forEach(line => {
-            line.style.transition = `opacity ${DISSOLVE_MS}ms ease`;
-            line.style.opacity    = '1';
-          });
-        });
+      // Fade in new lines (or reverse a fade-out)
+      newKeys.forEach(key => {
+        const existing = lineStates.get(key);
+        if (!existing) {
+          lineStates.set(key, { startOpacity: 0, targetOpacity: 1, startTime: now });
+        } else if (existing.targetOpacity === 0) {
+          const cur = getLineOpacity(existing);
+          lineStates.set(key, { startOpacity: cur, targetOpacity: 1, startTime: now });
+        }
       });
 
-      // ─ Update species connected state ─
+      // Update foreground label visibility (no DOM moves — transitions fire correctly)
       networkData.species.forEach(sp => {
-        const el = document.getElementById('sp-' + sp.id);
-        if (!el) return;
-        if (connectedIds.has(sp.id)) {
-          el.classList.add('connected');
-        } else {
-          el.classList.remove('connected');
-        }
+        const fg = document.getElementById('fg-' + sp.id);
+        if (fg) fg.classList.toggle('connected', connectedIds.has(sp.id));
       });
 
-      // ─ Week label ─
-      document.getElementById('week-display').textContent =
-        `week ${weekIdx + 1} of ${networkData.weeks.length}  ·  ${week.label}`;
     }
 
-    // ── Week timer (year-aware) ───────────────────────────────────────────────
+    // ── Week timer (looping) ──────────────────────────────────────────────────
 
-    const YEAR_BREAK_MS = 4000; // extra pause between seasons
+    const YEAR_BREAK_MS = 4000;
 
     function scheduleNextWeek() {
-      if (!playing) return;
-
-      const nextIdx = weekIdx + 1;
-      if (nextIdx >= networkData.weeks.length) {
-        playing = false;
-        document.getElementById('btn-play').textContent = 'play';
-        return;
-      }
-
-      const curYear  = networkData.weeks[weekIdx].year;
-      const nextYear = networkData.weeks[nextIdx].year;
-      const delay    = (curYear !== nextYear) ? speed + YEAR_BREAK_MS : speed;
-
+      const nextIdx = (weekIdx + 1) % weeks.length;
+      const delay   = nextIdx === 0 ? speed + YEAR_BREAK_MS : speed;
       weekTimer = setTimeout(() => {
         setWeek(nextIdx);
         scheduleNextWeek();
       }, delay);
     }
-
-    function startWeekTimer() {
-      clearTimeout(weekTimer);
-      scheduleNextWeek();
-    }
-
-    // ── Controls ──────────────────────────────────────────────────────────────
-
-    document.getElementById('btn-play').addEventListener('click', () => {
-      playing = !playing;
-      document.getElementById('btn-play').textContent = playing ? 'pause' : 'play';
-      if (playing) {
-        if (weekIdx >= networkData.weeks.length - 1) setWeek(0);
-        startWeekTimer();
-      } else {
-        clearTimeout(weekTimer);
-      }
-    });
-
-    document.getElementById('btn-reset').addEventListener('click', () => {
-      playing = false;
-      document.getElementById('btn-play').textContent = 'play';
-      clearTimeout(weekTimer);
-      setWeek(0);
-    });
-
-    document.getElementById('speed-slider').addEventListener('input', e => {
-      speed = Number(e.target.value);
-      document.getElementById('speed-val').textContent = (speed / 1000).toFixed(1) + 's';
-      if (playing) startWeekTimer();
-    });
 
     document.getElementById('info-toggle').addEventListener('click', () => {
       document.getElementById('info-body').classList.toggle('open');
@@ -561,11 +367,12 @@
 
     // ── Boot ──────────────────────────────────────────────────────────────────
 
-    setupSvg();
+    setupCanvas();
     initPositions();
     buildLabels();
     setWeek(0);
-    setInterval(physicsTick, 50);
+    scheduleNextWeek();
+    (function loop() { physicsTick(); requestAnimationFrame(loop); })();
   </script>
 
 </body>
