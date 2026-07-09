@@ -174,7 +174,7 @@
     const pos = {};  // id → {x, y, vx, vy}  (normalized 0–1)
     let weekIdx   = 0;
     let weekTimer = null;
-    const speed   = 2000;
+    const speed   = 4000;
 
     // Line states for canvas drawing: key → { startOpacity, targetOpacity, startTime }
     const lineStates = new Map();
@@ -217,16 +217,18 @@
       bg.innerHTML = '';
       fg.innerHTML = '';
       networkData.species.forEach(sp => {
+        const name = sp.type === 'pollinator' ? sp.name.replace('B. ', 'Bombus ') : sp.name;
+
         const bgEl = document.createElement('div');
         bgEl.id          = 'bg-' + sp.id;
         bgEl.className   = 'sp-label-bg';
-        bgEl.textContent = sp.name;
+        bgEl.textContent = name;
         bg.appendChild(bgEl);
 
         const fgEl = document.createElement('div');
         fgEl.id          = 'fg-' + sp.id;
         fgEl.className   = 'sp-label-fg';
-        fgEl.textContent = sp.name;
+        fgEl.textContent = name;
         fg.appendChild(fgEl);
       });
     }
