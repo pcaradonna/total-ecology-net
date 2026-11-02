@@ -114,6 +114,23 @@
       transition: opacity 4s ease;
     }
 
+    #net-bg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    #net-line-canvas {
+      position: absolute;
+      z-index: 2;
+    }
+
+    #net-fg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
     .net-label-bg {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -121,7 +138,7 @@
       font-size: 0.52rem;
       letter-spacing: 0.02em;
       padding: 4px 8px;
-      color: #1c1c1c;
+      color: #1a1a1a;
       pointer-events: none;
       user-select: none;
     }
@@ -133,7 +150,8 @@
       font-size: 0.52rem;
       letter-spacing: 0.02em;
       padding: 4px 8px;
-      color: #383838;
+      color: #bbb;
+      background: rgba(0, 0, 0, 0.7);
       pointer-events: none;
       user-select: none;
       opacity: 0;
