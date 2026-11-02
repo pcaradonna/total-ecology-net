@@ -55,7 +55,7 @@
       position: fixed;
       top: 2rem;
       right: 2.5rem;
-      z-index: 2;
+      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -83,16 +83,15 @@
       right: 2.5rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      z-index: 1;
+      z-index: 10;
     }
 
+    /* ── Bouncing logo ── */
     #ghost-trail {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 3;
       pointer-events: none;
     }
 
@@ -101,120 +100,405 @@
       width: 240px;
       filter: invert(1);
       pointer-events: none;
-      z-index: 0;
+      z-index: 3;
       transform-origin: center center;
+    }
+
+    /* ── Network background ── */
+    #network-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 4s ease;
+    }
+
+    #net-bg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    #net-line-canvas {
+      position: absolute;
+      z-index: 2;
+    }
+
+    #net-fg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+    }
+
+    .net-label-bg {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      font-size: 0.52rem;
+      letter-spacing: 0.02em;
+      padding: 4px 8px;
+      color: #1a1a1a;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .net-label-fg {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      font-size: 0.52rem;
+      letter-spacing: 0.02em;
+      padding: 4px 8px;
+      color: #efefef;
+      background: rgba(0, 0, 0, 0.88);
+      pointer-events: none;
+      user-select: none;
+      opacity: 0;
+      transition: opacity 8s ease;
+    }
+
+    .net-label-fg.connected {
+      opacity: 1;
+      text-shadow:
+        0 0 4px rgba(255,255,255,0.9),
+        0 0 12px rgba(255,255,255,0.6),
+        0 0 28px rgba(255,255,255,0.3);
     }
 
   </style>
 </head>
 <body>
+
   <nav>
-  <a href="people.html" class="nav-link" style="display:none">people/group</a>
-  <a href="creative.html" class="nav-link">creative production</a>
-  <a href="https://paul-caradonna.com" class="nav-link">ecological research</a>
-  <a href="art-science-exchange.html" class="nav-link">art-science exchange</a>
-  <a href="writing.html" class="nav-link">writing/essays</a>
-  <a href="dynamic-time-network.html" class="nav-link" style="display:none">dynamic time network</a>
-</nav>
-<canvas id="ghost-trail"></canvas>
+    <a href="people.html" class="nav-link" style="display:none">people/group</a>
+    <a href="creative.html" class="nav-link">creative production</a>
+    <a href="https://paul-caradonna.com" class="nav-link">ecological research</a>
+    <a href="art-science-exchange.html" class="nav-link">art-science exchange</a>
+    <a href="writing.html" class="nav-link">writing/essays</a>
+  </nav>
+
+  <!-- Network background (hidden until activated) -->
+  <div id="network-bg">
+    <div id="net-bg-canvas"></div>
+    <canvas id="net-line-canvas"></canvas>
+    <div id="net-fg-canvas"></div>
+  </div>
+
+  <!-- Bouncing logo -->
+  <canvas id="ghost-trail"></canvas>
   <img id="dvd-logo" src="assets/logo/total-ecology-logo/logo.png" alt="">
-  <main style="position: relative; z-index: 1;">
+
+  <main style="position: relative; z-index: 5;">
     <h1 class="title">Total Ecology</h1>
     <p class="subtitle">Ecological Research<br>Creative Inquiry</p>
     <p class="tagline">We're just trying to figure it out!</p>
   </main>
+
   <footer>total-ecology.net</footer>
+
+  <script>
+    const SHOW_NETWORK = Math.random() < 0.5;
+  </script>
+
+  <!-- ── Bouncing logo script ── -->
   <script>
     const logo      = document.getElementById('dvd-logo');
     const canvas    = document.getElementById('ghost-trail');
     const ctx       = canvas.getContext('2d');
-    const offscreen = document.createElement('canvas'); // pre-rendered silhouette
+    const offscreen = document.createElement('canvas');
 
-    function resizeCanvas() {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    if (!SHOW_NETWORK) {
+      function resizeCanvas() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
 
-    // Build a flat white filled silhouette from the logo's alpha channel
-    function buildSilhouette() {
-      const w = logo.offsetWidth;
-      const h = logo.offsetHeight;
-      offscreen.width  = w;
-      offscreen.height = h;
-      const offCtx = offscreen.getContext('2d');
-      offCtx.drawImage(logo, 0, 0, w, h);
-      offCtx.globalCompositeOperation = 'source-in';
-      offCtx.fillStyle = '#aaaaaa';
-      offCtx.fillRect(0, 0, w, h);
-      offCtx.globalCompositeOperation = 'source-over';
-    }
-
-    let x = 120, y = 80;
-    let vx = 1.3, vy = 0.9;
-    let angle = 0;
-    const SPIN_DEG_PER_FRAME = 360 / (30 * 60); // full rotation every 30s at 60fps
-
-    // Discrete ghost snapshots
-    const ghosts = [];
-    const GHOST_EVERY  = 18;       // stamp one ghost every N frames (~3.3/sec)
-    const GHOST_ALPHA  = 0.42;     // initial opacity
-    const GHOST_DECAY  = 0.000117; // alpha lost per frame (fades to 0 in ~60s)
-    let frameCount = 0;
-
-    function bounce() {
-      const logoW = logo.offsetWidth;
-      const logoH = logo.offsetHeight;
-      const maxX  = window.innerWidth  - logoW;
-      const maxY  = window.innerHeight - logoH;
-
-      x += vx;
-      y += vy;
-      angle += SPIN_DEG_PER_FRAME;
-      frameCount++;
-
-      if (x <= 0)    { x = 0;    vx =  Math.abs(vx); }
-      if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
-      if (y <= 0)    { y = 0;    vy =  Math.abs(vy); }
-      if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
-
-      logo.style.left      = x + 'px';
-      logo.style.top       = y + 'px';
-      logo.style.transform = 'rotate(' + angle + 'deg)';
-
-      if (frameCount % GHOST_EVERY === 0) {
-        ghosts.push({ x, y, angle, alpha: GHOST_ALPHA });
+      function buildSilhouette() {
+        const w = logo.offsetWidth;
+        const h = logo.offsetHeight;
+        offscreen.width  = w;
+        offscreen.height = h;
+        const offCtx = offscreen.getContext('2d');
+        offCtx.drawImage(logo, 0, 0, w, h);
+        offCtx.globalCompositeOperation = 'source-in';
+        offCtx.fillStyle = '#aaaaaa';
+        offCtx.fillRect(0, 0, w, h);
+        offCtx.globalCompositeOperation = 'source-over';
       }
 
-      for (let i = ghosts.length - 1; i >= 0; i--) {
-        ghosts[i].alpha -= GHOST_DECAY;
-        if (ghosts[i].alpha <= 0) ghosts.splice(i, 1);
+      let lx = 120, ly = 80;
+      let vx = 1.3,  vy = 0.9;
+      let angle = 0;
+      const SPIN = 360 / (30 * 60);
+      const ghosts = [];
+      const GHOST_EVERY = 18;
+      const GHOST_ALPHA = 0.42;
+      const GHOST_DECAY = 0.000117;
+      let frameCount = 0;
+
+      function bounce() {
+        const logoW = logo.offsetWidth;
+        const logoH = logo.offsetHeight;
+        const maxX  = window.innerWidth  - logoW;
+        const maxY  = window.innerHeight - logoH;
+
+        lx += vx; ly += vy;
+        angle += SPIN;
+        frameCount++;
+
+        if (lx <= 0)    { lx = 0;    vx =  Math.abs(vx); }
+        if (lx >= maxX) { lx = maxX; vx = -Math.abs(vx); }
+        if (ly <= 0)    { ly = 0;    vy =  Math.abs(vy); }
+        if (ly >= maxY) { ly = maxY; vy = -Math.abs(vy); }
+
+        logo.style.left      = lx + 'px';
+        logo.style.top       = ly + 'px';
+        logo.style.transform = 'rotate(' + angle + 'deg)';
+
+        if (frameCount % GHOST_EVERY === 0) {
+          ghosts.push({ x: lx, y: ly, angle, alpha: GHOST_ALPHA });
+        }
+
+        for (let i = ghosts.length - 1; i >= 0; i--) {
+          ghosts[i].alpha -= GHOST_DECAY;
+          if (ghosts[i].alpha <= 0) ghosts.splice(i, 1);
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const g of ghosts) {
+          ctx.save();
+          ctx.translate(g.x + logoW / 2, g.y + logoH / 2);
+          ctx.rotate(g.angle * Math.PI / 180);
+          ctx.globalAlpha = g.alpha;
+          ctx.drawImage(offscreen, -logoW / 2, -logoH / 2, logoW, logoH);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(bounce);
       }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const g of ghosts) {
-        ctx.save();
-        ctx.translate(g.x + logoW / 2, g.y + logoH / 2);
-        ctx.rotate(g.angle * Math.PI / 180);
-        ctx.globalAlpha = g.alpha;
-        ctx.drawImage(offscreen, -logoW / 2, -logoH / 2, logoW, logoH);
-        ctx.restore();
-      }
-
-      requestAnimationFrame(bounce);
-    }
-
-    function start() {
-      buildSilhouette();
-      bounce();
-    }
-
-    if (logo.complete) {
-      start();
-    } else {
-      logo.addEventListener('load', start);
+      function startLogo() { buildSilhouette(); bounce(); }
+      if (logo.complete) startLogo(); else logo.addEventListener('load', startLogo);
     }
   </script>
+
+  <!-- ── Network background script ── -->
+  <script src="assets/bumble-network-data.js"></script>
+  <script>
+    if (SHOW_NETWORK) {
+      logo.style.display   = 'none';
+      canvas.style.display = 'none';
+
+      const DISSOLVE_MS = 6000;
+      const MARGIN      = 0.10;
+      const LOOP_YEAR   = 2019;
+
+      const TOP_BEES = new Set([
+        'bee_flavifrons', 'bee_bifarius',  'bee_appositus', 'bee_rufocinctus',
+        'bee_insularis',  'bee_mixtus',    'bee_occidentalis',
+        'bee_nevadensis', 'bee_californicus'
+      ]);
+
+      const netSpecies = networkData.species.filter(sp =>
+        sp.type === 'plant' || TOP_BEES.has(sp.id)
+      );
+      const netWeeks = networkData.weeks
+        .filter(w => w.year === LOOP_YEAR)
+        .map(w => ({
+          ...w,
+          interactions: w.interactions.filter(([a, b]) =>
+            !(a.startsWith('bee_') && !TOP_BEES.has(a)) &&
+            !(b.startsWith('bee_') && !TOP_BEES.has(b))
+          )
+        }));
+
+      let W = window.innerWidth;
+      let H = window.innerHeight;
+      const pos = {};
+      let weekIdx   = 0;
+      let weekTimer = null;
+      const speed   = 3000;
+      const lineStates = new Map();
+      let netCtx;
+
+      function setupNetCanvas() {
+        const nc = document.getElementById('net-line-canvas');
+        nc.width  = W;
+        nc.height = H;
+        nc.style.width  = W + 'px';
+        nc.style.height = H + 'px';
+        nc.style.position = 'fixed';
+        nc.style.top  = '0';
+        nc.style.left = '0';
+        netCtx = nc.getContext('2d');
+        window.addEventListener('resize', () => {
+          W = window.innerWidth;
+          H = window.innerHeight;
+          nc.width  = W;
+          nc.height = H;
+        });
+      }
+
+      function initNetPositions() {
+        netSpecies.forEach(sp => {
+          pos[sp.id] = {
+            x:     0.15 + Math.random() * 0.70,
+            y:     0.15 + Math.random() * 0.70,
+            angle: Math.random() * Math.PI * 2,
+            speed: 0.000038 + Math.random() * 0.000025
+          };
+        });
+      }
+
+      function buildNetLabels() {
+        const bg = document.getElementById('net-bg-canvas');
+        const fg = document.getElementById('net-fg-canvas');
+        bg.innerHTML = '';
+        fg.innerHTML = '';
+        netSpecies.forEach(sp => {
+          const name = sp.type === 'pollinator' ? sp.name.replace('B. ', 'Bombus ') : sp.name;
+
+          const bgEl = document.createElement('div');
+          bgEl.id          = 'net-bg-' + sp.id;
+          bgEl.className   = 'net-label-bg';
+          bgEl.textContent = name;
+          bg.appendChild(bgEl);
+
+          const fgEl = document.createElement('div');
+          fgEl.id          = 'net-fg-' + sp.id;
+          fgEl.className   = 'net-label-fg';
+          fgEl.textContent = name;
+          fg.appendChild(fgEl);
+        });
+      }
+
+      function netPhysicsTick() {
+        Object.keys(pos).forEach(id => {
+          const p = pos[id];
+          let {x, y, angle, speed} = p;
+          angle += (Math.random() - 0.5) * 0.010;
+          if (x < MARGIN || x > 1 - MARGIN || y < MARGIN || y > 1 - MARGIN) {
+            const toCenter = Math.atan2(0.5 - y, 0.5 - x);
+            let diff = toCenter - angle;
+            while (diff >  Math.PI) diff -= 2 * Math.PI;
+            while (diff < -Math.PI) diff += 2 * Math.PI;
+            angle += diff * 0.025;
+          }
+          x = Math.max(0.03, Math.min(0.97, x + Math.cos(angle) * speed));
+          y = Math.max(0.03, Math.min(0.97, y + Math.sin(angle) * speed));
+          pos[id] = {x, y, angle, speed};
+        });
+        netRender();
+      }
+
+      function getLineOpacity(state) {
+        const t = Math.min(1, (Date.now() - state.startTime) / DISSOLVE_MS);
+        return state.startOpacity + (state.targetOpacity - state.startOpacity) * t;
+      }
+
+      function netRender() {
+        netSpecies.forEach(sp => {
+          const p  = pos[sp.id];
+          const bg = document.getElementById('net-bg-' + sp.id);
+          const fg = document.getElementById('net-fg-' + sp.id);
+          const left = (p.x * 100) + '%';
+          const top  = (p.y * 100) + '%';
+          if (bg) { bg.style.left = left; bg.style.top = top; }
+          if (fg) { fg.style.left = left; fg.style.top = top; }
+        });
+
+        netCtx.clearRect(0, 0, W, H);
+        const toDelete = [];
+        lineStates.forEach((state, key) => {
+          const opacity = getLineOpacity(state);
+          if (opacity <= 0.004 && state.targetOpacity === 0) { toDelete.push(key); return; }
+          const sep = key.indexOf('|||');
+          const a = key.slice(0, sep);
+          const b = key.slice(sep + 3);
+          const pa = pos[a], pb = pos[b];
+          if (!pa || !pb) return;
+          netCtx.beginPath();
+          netCtx.moveTo(pa.x * W, pa.y * H);
+          netCtx.lineTo(pb.x * W, pb.y * H);
+          netCtx.strokeStyle = `rgba(255,255,255,${opacity.toFixed(3)})`;
+          netCtx.lineWidth   = 1.5;
+          netCtx.stroke();
+        });
+        toDelete.forEach(k => lineStates.delete(k));
+      }
+
+      function setNetWeek(idx) {
+        weekIdx = idx;
+        const now  = Date.now();
+        const week = netWeeks[weekIdx];
+        const newKeys      = new Set();
+        const connectedIds = new Set();
+        week.interactions.forEach(pair => {
+          const key = pair[0] + '|||' + pair[1];
+          newKeys.add(key);
+          connectedIds.add(pair[0]);
+          connectedIds.add(pair[1]);
+        });
+        lineStates.forEach((state, key) => {
+          if (!newKeys.has(key)) {
+            const cur = getLineOpacity(state);
+            lineStates.set(key, { startOpacity: cur, targetOpacity: 0, startTime: now });
+          }
+        });
+        newKeys.forEach(key => {
+          const existing = lineStates.get(key);
+          if (!existing) {
+            lineStates.set(key, { startOpacity: 0, targetOpacity: 1, startTime: now });
+          } else if (existing.targetOpacity === 0) {
+            const cur = getLineOpacity(existing);
+            lineStates.set(key, { startOpacity: cur, targetOpacity: 1, startTime: now });
+          }
+        });
+        netSpecies.forEach(sp => {
+          const fg = document.getElementById('net-fg-' + sp.id);
+          if (fg) fg.classList.toggle('connected', connectedIds.has(sp.id));
+        });
+      }
+
+      function netFadeOutAndRestart() {
+        const now = Date.now();
+        lineStates.forEach((state, key) => {
+          lineStates.set(key, { startOpacity: getLineOpacity(state), targetOpacity: 0, startTime: now });
+        });
+        netSpecies.forEach(sp => {
+          const fg = document.getElementById('net-fg-' + sp.id);
+          if (fg) fg.classList.remove('connected');
+        });
+        weekTimer = setTimeout(() => {
+          lineStates.clear();
+          setNetWeek(0);
+          scheduleNextNetWeek();
+        }, 8200);
+      }
+
+      function scheduleNextNetWeek() {
+        const nextIdx = (weekIdx + 1) % netWeeks.length;
+        weekTimer = setTimeout(() => {
+          if (nextIdx === 0) netFadeOutAndRestart();
+          else { setNetWeek(nextIdx); scheduleNextNetWeek(); }
+        }, speed);
+      }
+
+      setupNetCanvas();
+      initNetPositions();
+      buildNetLabels();
+      setNetWeek(0);
+      scheduleNextNetWeek();
+      (function netLoop() { netPhysicsTick(); requestAnimationFrame(netLoop); })();
+
+      setTimeout(() => {
+        document.getElementById('network-bg').style.opacity = '1';
+      }, 800);
+    }
+  </script>
+
 </body>
 </html>
