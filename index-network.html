@@ -468,9 +468,11 @@
     scheduleNextNetWeek();
     (function netLoop() { netPhysicsTick(); requestAnimationFrame(netLoop); })();
 
-    // Fade the network in after a short pause
+    // Fade the network in and hide the bouncing logo
     setTimeout(() => {
       document.getElementById('network-bg').style.opacity = '1';
+      document.getElementById('dvd-logo').style.display   = 'none';
+      document.getElementById('ghost-trail').style.display = 'none';
     }, 800);
   </script>
 
