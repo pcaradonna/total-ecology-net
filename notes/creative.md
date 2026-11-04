@@ -1,6 +1,20 @@
 # Creative Production — Total Ecology
 
+
 Items listed newest first — this order controls display order on the page.
+
+---
+
+title: Bumble bee–plant interaction networks through time
+slug: network
+year: 2026
+medium: data visualization
+image: [screenshot — to be added]
+statement: [to be written by Paul]
+
+Foraging interactions between bumble bees and plants, observed week by week at the Rocky Mountain Biological Laboratory. Data span 2015–2026. Each node is a species; each line is an observed interaction. The network animates chronologically through all 12 years.
+
+---
 Images go in: `assets/creative/<slug>/`
 Add a new `---` block at the top for each new item.
 
