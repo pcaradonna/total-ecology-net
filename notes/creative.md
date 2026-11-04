@@ -10,7 +10,7 @@ slug: network
 year: 2026
 medium: data visualization
 image: [screenshot — to be added]
-statement: [to be written by Paul]
+statement: Dynamic temporal network of bumble bee–plant interactions at the Rocky Mountain Biological Laboratory (Gothic, CO, USA) 2015–2026.
 
 Foraging interactions between bumble bees and plants, observed week by week at the Rocky Mountain Biological Laboratory. Data span 2015–2026. Each node is a species; each line is an observed interaction. The network animates chronologically through all 12 years.
 
