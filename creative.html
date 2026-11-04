@@ -866,7 +866,8 @@
           const fg = document.getElementById('nfg-' + sp.id);
           if (fg) fg.classList.remove('connected');
         });
-        weekLabelEl.textContent = '';
+        const winterYear = netWeeks[weekIdx].year;
+        setTimeout(() => { weekLabelEl.textContent = winterYear + '  ·  winter'; }, DISSOLVE_MS * 0.5);
         setTimeout(() => { lineStates.clear(); then(); }, DISSOLVE_MS + YEAR_BREAK);
       }
 
