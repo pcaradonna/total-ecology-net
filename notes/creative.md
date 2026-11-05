@@ -28,6 +28,19 @@ Add `link:` and `link-text:` for purchase or external links.
 
 ---
 
+title: Ecophysiology of Linum lewisii
+slug: ecophysiology-linum-lewisii
+year: 2026
+medium: shirt
+image: IMG_3501.jpeg
+extra-images: IMG_3495.jpeg (concept sketch), IMG_3498.jpeg (screen printing)
+
+The intersection of ecology, evolution, and physiology in the context of climate change, explored through a massive snow melt and drought experiment with the montane wildflower, Linum lewisii.
+
+Research, design, and printing conducted by Total Ecology humans in Chicago in honor of a dissertation defense.
+
+---
+
 title: A Critical Review of Pollinator Garden Advice
 slug: pollinator-garden-advice
 year: 2026
