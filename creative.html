@@ -177,19 +177,19 @@
       pointer-events: none;
     }
 
-    #net-statement {
-      font-size: 0.58rem;
-      color: #3a3a3a;
-      line-height: 1.8;
-      letter-spacing: 0.01em;
-      margin-bottom: 0.8rem;
-    }
-
     #net-week-label {
       font-size: 0.52rem;
       color: #2e2e2e;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    #net-statement {
+      font-size: 0.58rem;
+      color: #3a3a3a;
+      line-height: 1.8;
+      letter-spacing: 0.01em;
     }
 
     #net-bg-canvas, #net-fg-canvas {
@@ -450,8 +450,8 @@
       <!-- Bumble bee network -->
       <div class="design-entry clickable" id="entry-network" role="button" tabindex="0" aria-label="Open bumble bee–plant interaction networks through time">
         <div class="design-images single" style="max-width: 640px;">
-          <div class="net-placeholder">
-            <span class="net-placeholder-text">bumble bee – plant &nbsp;·&nbsp; 2015–2026</span>
+          <div class="design-img-wrap">
+            <img src="assets/creative/network/network-screenshot-20261104.png" alt="Bumble bee–plant interaction network">
           </div>
         </div>
         <div class="design-caption">
@@ -631,8 +631,8 @@
     <canvas id="net-line-canvas"></canvas>
     <div id="net-fg-canvas"></div>
     <div id="net-info">
-      <p id="net-statement">A dynamic network graph of who interacts with whom, illustrating all the connections we observe among species, as they change over the course of the season.</p>
       <p id="net-week-label"></p>
+      <p id="net-statement">A dynamic network graph of who interacts with whom, illustrating all the connections we observe among species, as they change over the course of the season.</p>
     </div>
   </div>
 
