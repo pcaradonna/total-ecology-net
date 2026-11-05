@@ -288,6 +288,8 @@
     .flip-front.on-white,
     .flip-back.on-white { background: #fff; padding: 0.75rem; }
 
+    .tile-img.on-white { background: #fff; padding: 0.75rem; }
+
     .flip-front img,
     .flip-back img {
       width: 100%;
@@ -451,22 +453,15 @@
       <!-- Zine Workshop -->
       <div class="design-tile" id="entry-zine-workshop" role="button" tabindex="0" aria-label="Open Department of Creative Inquiry — Ecology Zine Workshop">
         <div class="tile-img">
-          <img src="assets/creative/zine-workshop/IMG_6783.jpeg" alt="Ecology Zine Workshop">
+          <img src="assets/creative/zine-workshop/IMG_6783.jpeg" alt="Ecology Zine Workshop" style="object-fit: cover;">
         </div>
         <div class="tile-label">Department of Creative Inquiry — Ecology Zine Workshop #1</div>
       </div>
 
       <!-- Pollinator Garden Advice -->
-      <div class="design-tile flippable" id="entry-pollinator-garden" role="button" tabindex="0" aria-label="Open A Critical Review of Pollinator Garden Advice">
-        <div class="tile-flip-wrapper">
-          <div class="flip-inner">
-            <div class="flip-front">
-              <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-front.jpeg" alt="A Critical Review of Pollinator Garden Advice — front">
-            </div>
-            <div class="flip-back">
-              <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-back.jpeg" alt="A Critical Review of Pollinator Garden Advice — back">
-            </div>
-          </div>
+      <div class="design-tile" id="entry-pollinator-garden" role="button" tabindex="0" aria-label="Open A Critical Review of Pollinator Garden Advice">
+        <div class="tile-img">
+          <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-front.jpeg" alt="A Critical Review of Pollinator Garden Advice — front">
         </div>
         <div class="tile-label">A Critical Review of Pollinator Garden Advice</div>
       </div>
@@ -504,31 +499,17 @@
       </div>
 
       <!-- Plant Lifespan -->
-      <div class="design-tile flippable" id="entry-plant-lifespan" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
-        <div class="tile-flip-wrapper">
-          <div class="flip-inner">
-            <div class="flip-front">
-              <img src="assets/creative/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
-            </div>
-            <div class="flip-back">
-              <img src="assets/creative/plant-lifespan/perennial-plants-back-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — back">
-            </div>
-          </div>
+      <div class="design-tile" id="entry-plant-lifespan" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
+        <div class="tile-img">
+          <img src="assets/creative/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
         </div>
         <div class="tile-label">Perennial Plants of the Rockies</div>
       </div>
 
       <!-- Pediocactus Season One -->
-      <div class="design-tile flippable" id="entry-pediocactus" role="button" tabindex="0" aria-label="Open Mountain Ball Cactus Demography Society">
-        <div class="tile-flip-wrapper">
-          <div class="flip-inner">
-            <div class="flip-front on-white">
-              <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Mountain Ball Cactus Demography Society — front">
-            </div>
-            <div class="flip-back on-white">
-              <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-back-20260401-Background-Removed.png" alt="Mountain Ball Cactus Demography Society — back">
-            </div>
-          </div>
+      <div class="design-tile" id="entry-pediocactus" role="button" tabindex="0" aria-label="Open Mountain Ball Cactus Demography Society">
+        <div class="tile-img on-white">
+          <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Mountain Ball Cactus Demography Society — front">
         </div>
         <div class="tile-label">Mountain Ball Cactus Demography Society</div>
       </div>
@@ -892,7 +873,7 @@
         Object.keys(pos).forEach(id => {
           let {x, y, angle, speed} = pos[id];
           angle += (Math.random() - 0.5) * 0.010;
-          if (x < MARGIN || x > 1 - MARGIN || y < MARGIN || y > 1 - MARGIN) {
+          if (x < MARGIN || x > 1 - MARGIN || y < MARGIN || y > 0.72) {
             const toCenter = Math.atan2(0.5 - y, 0.5 - x);
             let diff = toCenter - angle;
             while (diff >  Math.PI) diff -= 2 * Math.PI;
@@ -900,7 +881,7 @@
             angle += diff * 0.025;
           }
           x = Math.max(0.03, Math.min(0.97, x + Math.cos(angle) * speed));
-          y = Math.max(0.03, Math.min(0.97, y + Math.sin(angle) * speed));
+          y = Math.max(0.03, Math.min(0.75, y + Math.sin(angle) * speed));
           pos[id] = {x, y, angle, speed};
         });
         render();
