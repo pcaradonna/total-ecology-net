@@ -116,29 +116,6 @@
       text-align: center;
     }
 
-    /* ── Network placeholder card ── */
-    .net-placeholder {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #040404;
-      border: 1px solid #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.2s;
-    }
-
-    .design-entry.clickable:hover .net-placeholder {
-      border-color: #333;
-    }
-
-    .net-placeholder-text {
-      font-size: 0.52rem;
-      color: #1e1e1e;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
     /* ── Network full-screen overlay ── */
     #network-overlay {
       display: none;
@@ -242,82 +219,84 @@
         0 0 28px rgba(255,255,255,0.3);
     }
 
-    /* ── Design entries ── */
-    .designs-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6rem;
+    /* ── Design grid ── */
+    .design-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
       max-width: 900px;
       margin: 0 auto;
     }
 
-    .design-entry {
+    .design-tile {
       display: flex;
       flex-direction: column;
-      align-items: center;
-    }
-
-    .design-entry.clickable {
       cursor: pointer;
     }
 
-    .design-images {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: flex-end;
-      width: 100%;
+    .tile-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #000;
     }
 
-    .design-images.single {
-      grid-template-columns: 1fr;
-      max-width: 320px;
-      justify-self: center;
-      width: auto;
-    }
-
-    .design-img-wrap {
-      line-height: 0;
-    }
-
-    .design-img-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
-      opacity: 0.92;
-      transition: opacity 0.2s;
-    }
-
-    .design-entry.clickable:hover .design-img-wrap img {
-      opacity: 1;
-    }
-
-    /* White card for dark/black designs */
-    .design-img-wrap.on-white {
-      background: #fff;
-      padding: 0.5rem;
-      aspect-ratio: 1 / 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .design-img-wrap.on-white img {
+    .tile-img img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      display: block;
+      opacity: 0.9;
+      transition: opacity 0.2s;
     }
 
-    .design-caption {
-      margin-top: 1.3rem;
+    .design-tile:hover .tile-img img { opacity: 1; }
+
+    .tile-label {
+      font-size: 0.58rem;
+      color: #555;
+      letter-spacing: 0.01em;
+      line-height: 1.6;
+      margin-top: 0.6rem;
       text-align: center;
     }
 
-    .design-title {
-      font-size: 0.68rem;
-      color: #aaa;
-      letter-spacing: 0.01em;
-      line-height: 1.5;
+    /* ── Flip animation ── */
+    .tile-flip-wrapper {
+      aspect-ratio: 1;
+      perspective: 900px;
+      overflow: hidden;
+    }
+
+    .flip-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.75s ease-in-out;
+    }
+
+    .flip-inner.flipped { transform: rotateY(180deg); }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: #000;
+    }
+
+    .flip-back { transform: rotateY(180deg); }
+
+    .flip-front.on-white,
+    .flip-back.on-white { background: #fff; padding: 0.75rem; }
+
+    .flip-front img,
+    .flip-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     /* ── Modal ── */
@@ -437,8 +416,8 @@
       display: block;
     }
 
-    @media (max-width: 600px) {
-      .design-images { grid-template-columns: 1fr; }
+    @media (max-width: 540px) {
+      .design-grid   { grid-template-columns: 1fr; }
       .modal-images  { grid-template-columns: 1fr; }
       .modal-images-context { grid-template-columns: 1fr; }
     }
@@ -459,114 +438,98 @@
   <main>
     <p class="page-heading">Archive</p>
 
-    <div class="designs-list">
+    <div class="design-grid">
 
       <!-- Bumble bee network -->
-      <div class="design-entry clickable" id="entry-network" role="button" tabindex="0" aria-label="Open bumble bee–plant interaction networks through time">
-        <div class="design-images single" style="max-width: 460px;">
-          <div class="design-img-wrap">
-            <img src="assets/creative/network/network-screenshot-20261104.png" alt="Bumble bee–plant interaction network">
-          </div>
+      <div class="design-tile" id="entry-network" role="button" tabindex="0" aria-label="Open bumble bee–plant interaction networks through time">
+        <div class="tile-img">
+          <img src="assets/creative/network/network-screenshot-20261104.png" alt="Bumble bee–plant interaction network">
         </div>
-        <div class="design-caption">
-          <div class="design-title">Bumble bee–plant interaction networks through time</div>
-        </div>
+        <div class="tile-label">Bumble bee–plant interaction networks through time</div>
       </div>
 
       <!-- Pollinator Garden Advice -->
-      <div class="design-entry clickable" id="entry-pollinator-garden" role="button" tabindex="0" aria-label="Open A Critical Review of Pollinator Garden Advice">
-        <div class="design-images">
-          <div class="design-img-wrap">
-            <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-front.jpeg" alt="A Critical Review of Pollinator Garden Advice — front">
-          </div>
-          <div class="design-img-wrap">
-            <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-back.jpeg" alt="A Critical Review of Pollinator Garden Advice — back">
+      <div class="design-tile flippable" id="entry-pollinator-garden" role="button" tabindex="0" aria-label="Open A Critical Review of Pollinator Garden Advice">
+        <div class="tile-flip-wrapper">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-front.jpeg" alt="A Critical Review of Pollinator Garden Advice — front">
+            </div>
+            <div class="flip-back">
+              <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-back.jpeg" alt="A Critical Review of Pollinator Garden Advice — back">
+            </div>
           </div>
         </div>
-        <div class="design-caption">
-          <div class="design-title">A Critical Review of Pollinator Garden Advice</div>
-        </div>
+        <div class="tile-label">A Critical Review of Pollinator Garden Advice</div>
       </div>
 
       <!-- Ecophysiology of Linum lewisii -->
-      <div class="design-entry clickable" id="entry-linum" role="button" tabindex="0" aria-label="Open Ecophysiology of Linum lewisii">
-        <div class="design-images single" style="max-width: 360px;">
-          <div class="design-img-wrap">
-            <img src="assets/creative/ecophysiology-linum-lewisii/IMG_3501.jpeg" alt="Ecophysiology of Linum lewisii — front">
-          </div>
+      <div class="design-tile" id="entry-linum" role="button" tabindex="0" aria-label="Open Ecophysiology of Linum lewisii">
+        <div class="tile-img">
+          <img src="assets/creative/ecophysiology-linum-lewisii/IMG_3501.jpeg" alt="Ecophysiology of Linum lewisii">
         </div>
-        <div class="design-caption">
-          <div class="design-title">Ecophysiology of <em>Linum lewisii</em></div>
-        </div>
+        <div class="tile-label">Ecophysiology of <em>Linum lewisii</em></div>
       </div>
 
       <!-- Multiple Working Hypotheses -->
-      <div class="design-entry clickable" id="entry-hypotheses" role="button" tabindex="0" aria-label="Open On the Method of Multiple Working Hypotheses">
-        <div class="design-images single">
-          <div class="design-img-wrap">
-            <img src="assets/creative/multiple-working-hypotheses/keep-honking-hypotheses-20260401-Background-Removed-cropped.png" alt="Multiple Working Hypotheses">
-          </div>
+      <div class="design-tile" id="entry-hypotheses" role="button" tabindex="0" aria-label="Open On the Method of Multiple Working Hypotheses">
+        <div class="tile-img">
+          <img src="assets/creative/multiple-working-hypotheses/keep-honking-hypotheses-20260401-Background-Removed-cropped.png" alt="Multiple Working Hypotheses">
         </div>
-        <div class="design-caption">
-          <div class="design-title">On the Method of Multiple Working Hypotheses</div>
-        </div>
+        <div class="tile-label">On the Method of Multiple Working Hypotheses</div>
       </div>
 
       <!-- Yarrow — Patricia Wolf -->
-      <div class="design-entry clickable" id="entry-yarrow" role="button" tabindex="0" aria-label="Open Music To Watch Seeds Grow By 009: Patricia Wolf (Yarrow)">
-        <div class="design-images single" style="max-width: 520px;">
-          <div class="design-img-wrap">
-            <img src="assets/creative/yarrow-patricia-wolf/yarrow casette patricia wolf.jpg" alt="Yarrow — cassette">
-          </div>
+      <div class="design-tile" id="entry-yarrow" role="button" tabindex="0" aria-label="Open Music To Watch Seeds Grow By 009: Patricia Wolf (Yarrow)">
+        <div class="tile-img">
+          <img src="assets/creative/yarrow-patricia-wolf/yarrow casette patricia wolf.jpg" alt="Yarrow — cassette">
         </div>
-        <div class="design-caption">
-          <div class="design-title">Music To Watch Seeds Grow By 009: Patricia Wolf (Yarrow)</div>
-        </div>
+        <div class="tile-label">Music To Watch Seeds Grow By 009: Patricia Wolf (Yarrow)</div>
       </div>
 
       <!-- Bee Diet -->
-      <div class="design-entry clickable" id="entry-bee-diet" role="button" tabindex="0" aria-label="Open On the Diet Diversity of Wild Bumble Bees">
-        <div class="design-images">
-          <div class="design-img-wrap">
-            <img src="assets/creative/bee-diet/bee-diet-front-20260401-Background-Removed.png" alt="On the Diet Diversity of Wild Bumble Bees — front">
-          </div>
-          <div class="design-img-wrap">
-            <img src="assets/creative/bee-diet/bee-diet-back-20260401-Background-Removed.png" alt="On the Diet Diversity of Wild Bumble Bees — back">
+      <div class="design-tile flippable" id="entry-bee-diet" role="button" tabindex="0" aria-label="Open On the Diet Diversity of Wild Bumble Bees">
+        <div class="tile-flip-wrapper">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <img src="assets/creative/bee-diet/bee-diet-front-20260401-Background-Removed.png" alt="On the Diet Diversity of Wild Bumble Bees — front">
+            </div>
+            <div class="flip-back">
+              <img src="assets/creative/bee-diet/bee-diet-back-20260401-Background-Removed.png" alt="On the Diet Diversity of Wild Bumble Bees — back">
+            </div>
           </div>
         </div>
-        <div class="design-caption">
-          <div class="design-title">On the Diet Diversity of Wild Bumble Bees</div>
-        </div>
+        <div class="tile-label">On the Diet Diversity of Wild Bumble Bees</div>
       </div>
 
       <!-- Plant Lifespan -->
-      <div class="design-entry clickable" id="entry-plant-lifespan" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
-        <div class="design-images">
-          <div class="design-img-wrap">
-            <img src="assets/creative/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
-          </div>
-          <div class="design-img-wrap">
-            <img src="assets/creative/plant-lifespan/perennial-plants-back-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — back">
+      <div class="design-tile flippable" id="entry-plant-lifespan" role="button" tabindex="0" aria-label="Open Perennial Plants of the Rockies">
+        <div class="tile-flip-wrapper">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <img src="assets/creative/plant-lifespan/perennial-plants-front-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — front">
+            </div>
+            <div class="flip-back">
+              <img src="assets/creative/plant-lifespan/perennial-plants-back-20260401-Background-Removed.png" alt="Perennial Plants of the Rockies — back">
+            </div>
           </div>
         </div>
-        <div class="design-caption">
-          <div class="design-title">Perennial Plants of the Rockies</div>
-        </div>
+        <div class="tile-label">Perennial Plants of the Rockies</div>
       </div>
 
-      <!-- Pediocactus Season One (black design — on white) -->
-      <div class="design-entry clickable" id="entry-pediocactus" role="button" tabindex="0" aria-label="Open Mountain Ball Cactus Demography Society">
-        <div class="design-images">
-          <div class="design-img-wrap on-white">
-            <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Pediocactus Season One — front">
-          </div>
-          <div class="design-img-wrap on-white">
-            <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-back-20260401-Background-Removed.png" alt="Pediocactus Season One — back">
+      <!-- Pediocactus Season One -->
+      <div class="design-tile flippable" id="entry-pediocactus" role="button" tabindex="0" aria-label="Open Mountain Ball Cactus Demography Society">
+        <div class="tile-flip-wrapper">
+          <div class="flip-inner">
+            <div class="flip-front on-white">
+              <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-front-20260401-Background-Removed.png" alt="Mountain Ball Cactus Demography Society — front">
+            </div>
+            <div class="flip-back on-white">
+              <img src="assets/creative/pediocactus-season-one/pediocactus-season-one-back-20260401-Background-Removed.png" alt="Mountain Ball Cactus Demography Society — back">
+            </div>
           </div>
         </div>
-        <div class="design-caption">
-          <div class="design-title">Mountain Ball Cactus Demography Society</div>
-        </div>
+        <div class="tile-label">Mountain Ball Cactus Demography Society</div>
       </div>
 
     </div>
@@ -757,6 +720,16 @@
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-backdrop.open').forEach(m => closeModal(m));
       }
+    });
+
+    // Auto-flip front/back tiles — staggered so they don't all flip at once
+    document.querySelectorAll('.design-tile.flippable .flip-inner').forEach((inner, i) => {
+      let flipped = false;
+      setTimeout(function tick() {
+        flipped = !flipped;
+        inner.classList.toggle('flipped', flipped);
+        setTimeout(tick, 3200);
+      }, i * 1100 + 2800);
     });
   </script>
 
