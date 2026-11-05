@@ -223,8 +223,8 @@
     .design-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      max-width: 900px;
+      gap: 1.2rem;
+      max-width: 680px;
       margin: 0 auto;
     }
 
@@ -243,7 +243,7 @@
     .tile-img img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       display: block;
       opacity: 0.9;
       transition: opacity 0.2s;
@@ -263,30 +263,27 @@
     /* ── Flip animation ── */
     .tile-flip-wrapper {
       aspect-ratio: 1;
-      perspective: 900px;
       overflow: hidden;
+      position: relative;
     }
 
     .flip-inner {
       width: 100%;
       height: 100%;
       position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.75s ease-in-out;
     }
-
-    .flip-inner.flipped { transform: rotateY(180deg); }
 
     .flip-front,
     .flip-back {
       position: absolute;
       inset: 0;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
       background: #000;
+      transition: opacity 0.1s ease;
     }
 
-    .flip-back { transform: rotateY(180deg); }
+    .flip-back { opacity: 0; }
+    .flip-inner.flipped .flip-front { opacity: 0; }
+    .flip-inner.flipped .flip-back  { opacity: 1; }
 
     .flip-front.on-white,
     .flip-back.on-white { background: #fff; padding: 0.75rem; }
@@ -295,9 +292,12 @@
     .flip-back img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       display: block;
     }
+
+    .flip-front.on-white img,
+    .flip-back.on-white img { object-fit: contain; }
 
     /* ── Modal ── */
     .modal-backdrop {
@@ -446,6 +446,14 @@
           <img src="assets/creative/network/network-screenshot-20261104.png" alt="Bumble bee–plant interaction network">
         </div>
         <div class="tile-label">Bumble bee–plant interaction networks through time</div>
+      </div>
+
+      <!-- Zine Workshop -->
+      <div class="design-tile" id="entry-zine-workshop" role="button" tabindex="0" aria-label="Open Department of Creative Inquiry — Ecology Zine Workshop">
+        <div class="tile-img">
+          <img src="assets/creative/zine-workshop/IMG_6783.jpeg" alt="Ecology Zine Workshop">
+        </div>
+        <div class="tile-label">Department of Creative Inquiry — Ecology Zine Workshop #1</div>
       </div>
 
       <!-- Pollinator Garden Advice -->
@@ -628,6 +636,28 @@
     </div>
   </div>
 
+  <!-- Zine Workshop Modal -->
+  <div class="modal-backdrop" id="modal-zine-workshop" role="dialog" aria-modal="true">
+    <button class="modal-close modal-close-btn">close</button>
+    <div class="modal-content">
+      <div class="modal-images" style="grid-template-columns: 1fr; margin-bottom: 1.5rem;">
+        <img src="assets/creative/zine-workshop/IMG_6783.jpeg" alt="Ecology Zine Workshop — group">
+      </div>
+      <div class="modal-images" style="margin-bottom: 2rem;">
+        <img src="assets/creative/zine-workshop/IMG_6785.jpeg" alt="Ecology Zine Workshop — working">
+        <img src="assets/creative/zine-workshop/IMG_6787.jpeg" alt="Ecology Zine Workshop — detail">
+      </div>
+      <div class="modal-title">Department of Creative Inquiry — Ecology Zine Workshop #1</div>
+      <div class="modal-body">
+        <p>During our weekly research group meeting, we all decided it would be a good idea to "think outside the doc" when it comes to our various ecological research projects. We foraged for a wide range of physical source material and then using the classic "mini-zine" format, we got to work.</p>
+        <br>
+        <p>What is interesting, is that this was by far the most quiet research group meeting we have had in 10 years. Why, you might ask? Perhaps that by giving a bunch of ecologists permission to playfully and creatively explore and engage with their research, new ideas emerge, different connections are made. And there need not be a sacrifice to the scientific rigor.</p>
+        <br>
+        <p>At the end of our group meeting, we all agreed that we should do this regularly...</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Pollinator Garden Advice Modal -->
   <div class="modal-backdrop" id="modal-pollinator-garden" role="dialog" aria-modal="true">
     <button class="modal-close modal-close-btn">close</button>
@@ -690,6 +720,7 @@
 
   <script>
     const pairs = [
+      { entry: 'entry-zine-workshop',      modal: 'modal-zine-workshop'      },
       { entry: 'entry-pollinator-garden', modal: 'modal-pollinator-garden' },
       { entry: 'entry-linum',             modal: 'modal-linum'             },
       { entry: 'entry-bee-diet',          modal: 'modal-bee-diet'          },
