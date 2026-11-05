@@ -424,9 +424,23 @@
       pointer-events: none;
     }
 
+    .modal-images-context {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .modal-images-context img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     @media (max-width: 600px) {
       .design-images { grid-template-columns: 1fr; }
       .modal-images  { grid-template-columns: 1fr; }
+      .modal-images-context { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -449,13 +463,28 @@
 
       <!-- Bumble bee network -->
       <div class="design-entry clickable" id="entry-network" role="button" tabindex="0" aria-label="Open bumble bee–plant interaction networks through time">
-        <div class="design-images single" style="max-width: 640px;">
+        <div class="design-images single" style="max-width: 460px;">
           <div class="design-img-wrap">
             <img src="assets/creative/network/network-screenshot-20261104.png" alt="Bumble bee–plant interaction network">
           </div>
         </div>
         <div class="design-caption">
           <div class="design-title">Bumble bee–plant interaction networks through time</div>
+        </div>
+      </div>
+
+      <!-- Pollinator Garden Advice -->
+      <div class="design-entry clickable" id="entry-pollinator-garden" role="button" tabindex="0" aria-label="Open A Critical Review of Pollinator Garden Advice">
+        <div class="design-images">
+          <div class="design-img-wrap">
+            <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-front.jpeg" alt="A Critical Review of Pollinator Garden Advice — front">
+          </div>
+          <div class="design-img-wrap">
+            <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-back.jpeg" alt="A Critical Review of Pollinator Garden Advice — back">
+          </div>
+        </div>
+        <div class="design-caption">
+          <div class="design-title">A Critical Review of Pollinator Garden Advice</div>
         </div>
       </div>
 
@@ -624,6 +653,34 @@
     </div>
   </div>
 
+  <!-- Pollinator Garden Advice Modal -->
+  <div class="modal-backdrop" id="modal-pollinator-garden" role="dialog" aria-modal="true">
+    <button class="modal-close modal-close-btn">close</button>
+    <div class="modal-content">
+      <div class="modal-images">
+        <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-front.jpeg" alt="A Critical Review of Pollinator Garden Advice — front">
+        <img src="assets/creative/pollinator-garden-advice/pollinator-garden-poster-tee-back.jpeg" alt="A Critical Review of Pollinator Garden Advice — back">
+      </div>
+      <div class="modal-images-context">
+        <img src="assets/creative/pollinator-garden-advice/IMG_5804.jpeg" alt="Pollinator Garden Advice at ESA — shirts on display">
+        <img src="assets/creative/pollinator-garden-advice/IMG_5805.jpeg" alt="Pollinator Garden Advice at ESA — front and back">
+        <img src="assets/creative/pollinator-garden-advice/IMG_7885.jpeg" alt="Pollinator Garden Advice at ESA — poster session">
+      </div>
+      <div class="modal-title">A Critical Review of Pollinator Garden Advice</div>
+      <div class="modal-body">
+        <p>There is tremendous enthusiasm for pollinator gardening, but what is best practice?</p>
+        <br>
+        <p>Research in Progress: presented at the Ecological Society of America Meeting in Salt Lake City, Utah, 28 July 2026.</p>
+        <br>
+        <p>Despite the immense popularity of pollinator gardening, it remains unclear whether common advice is evidence-based. We therefore critically evaluated the "advice landscape" encountered by pollinator gardeners. We first conducted a series of internet searches to collate advice encountered by the average gardener interested in supporting pollinators (n = 101 lists of guidelines). We then reviewed the scientific literature to evaluate the underlying logic and ecological evidence in support of this advice. What we find is that pollinator garden guidelines rarely cite empirical sources, and the ecological-logic underlying advice is not always articulated. At the same time, many recommendations do align with scientific evidence, but with important nuance.</p>
+        <br>
+        <p>In this "Experimental Ecology Poster" we highlight some of the most common pollinator garden advice using this framework.</p>
+        <br>
+        <p>Research, design, and printing conducted by Total Ecology humans in Chicago.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Network full-screen overlay -->
   <div id="network-overlay">
     <button id="net-close">close</button>
@@ -632,7 +689,7 @@
     <div id="net-fg-canvas"></div>
     <div id="net-info">
       <p id="net-week-label"></p>
-      <p id="net-statement">A dynamic network graph of who interacts with whom, illustrating all the connections we observe among species, as they change over the course of the season.</p>
+      <p id="net-statement">A dynamic network graph of who interacts with whom, illustrating all the connections we observe among species, as they change over the course of the season.<br><br>The interactions depicted here represent those between bumble bees and flowering plants observed week by week over the growing season. Each node is a species; each link is an observed interaction. As we move through time, the interactions slowly form and dissolve.<br><br>If everything is changing, then what does this network even exist? Is it all just an abstraction of nature?<br><br>Data are from our long-term field research on ecological interactions at the Rocky Mountain Biological Laboratory from 2015–2026.</p>
     </div>
   </div>
 
@@ -640,11 +697,12 @@
 
   <script>
     const pairs = [
-      { entry: 'entry-bee-diet',       modal: 'modal-bee-diet'       },
-      { entry: 'entry-plant-lifespan', modal: 'modal-plant-lifespan' },
-      { entry: 'entry-pediocactus',    modal: 'modal-pediocactus'    },
-      { entry: 'entry-hypotheses',     modal: 'modal-hypotheses'     },
-      { entry: 'entry-yarrow',         modal: 'modal-yarrow'         },
+      { entry: 'entry-pollinator-garden', modal: 'modal-pollinator-garden' },
+      { entry: 'entry-bee-diet',          modal: 'modal-bee-diet'          },
+      { entry: 'entry-plant-lifespan',    modal: 'modal-plant-lifespan'    },
+      { entry: 'entry-pediocactus',       modal: 'modal-pediocactus'       },
+      { entry: 'entry-hypotheses',        modal: 'modal-hypotheses'        },
+      { entry: 'entry-yarrow',            modal: 'modal-yarrow'            },
     ];
 
     function openModal(modal)  { modal.classList.add('open');    document.body.style.overflow = 'hidden'; }

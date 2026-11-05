@@ -5,14 +5,17 @@ Items listed newest first — this order controls display order on the page.
 
 ---
 
-title: Bumble bee–plant interaction networks through time
+title: Temporally dynamic ecological interaction network
 slug: network
 year: 2026
 medium: data visualization
 image: [screenshot — to be added]
-statement: A dynamic network graph of who interacts with whom, illustrating all the connections we observe among species, as they change over the course of the season.
-
-Foraging interactions between bumble bees and plants, observed week by week at the Rocky Mountain Biological Laboratory. Data span 2015–2026. Each node is a species; each line is an observed interaction. The network animates chronologically through all 12 years.
+statement: 
+A dynamic network graph of who interacts with whom, illustrating all the connections we observe among species, as they change over the course of the season. 
+The interactions depicted here represent those between bumble bees and flowering plants observed week by week over the growing season.
+Each node is a species; each link is an observed interaction. As we move through time, the interactions slowly form and dissolve.
+If everything is changing, then what does this network even exist? Is it all just an abstraction of nature?
+Data are from our long-term field research on ecological interactions at the Rocky Mountain Biological Laboratory from 2015-2016.
 
 ---
 Images go in: `assets/creative/<slug>/`
@@ -25,13 +28,31 @@ Add `link:` and `link-text:` for purchase or external links.
 
 ---
 
+title: A Critical Review of Pollinator Garden Advice
+slug: pollinator-garden-advice
+year: 2026
+medium: poster tee
+image-front: pollinator-garden-poster-tee-front.jpeg
+image-back: pollinator-garden-poster-tee-back.jpeg
+extra-images: IMG_5804.jpeg, IMG_5805.jpeg, IMG_7885.jpeg
+
+There is tremendous enthusiasm for pollinator gardening, but what is best practice?
+
+Research in Progress: presented at the Ecological Society of America Meeting in Salt Lake City, Utah, 28 July 2026. Despite the immense popularity of pollinator gardening, it remains unclear whether common advice is evidence-based. We therefore critically evaluated the "advice landscape" encountered by pollinator gardeners. We first conducted a series of internet searches to collate advice encountered by the average gardener interested in supporting pollinators (n = 101 lists of guidelines). We then reviewed the scientific literature to evaluate the underlying logic and ecological evidence in support of this advice. What we find is that pollinator garden guidelines rarely cite empirical sources, and the ecological-logic underlying advice is not always articulated. At the same time, many recommendations do align with scientific evidence, but with important nuance.
+
+In this "Experimental Ecology Poster" we highlight some of the most common pollinator garden advice using this framework.
+
+Research, design, and printing conducted by Total Ecology humans in Chicago.
+
+---
+
 title: Music To Watch Seeds Grow By 009: Patricia Wolf (Yarrow)
 slug: yarrow
 year: 2024
 medium: music / cassette
 image: yarrow casette patricia wolf.jpg
 link: https://patriciawolf.bandcamp.com/album/music-to-watch-seeds-grow-by-009-patricia-wolf-yarrow
-link-text: pre-order
+link-text: listen here
 
 Patricia Wolf created this album in response to her artist residency at the Rocky Mountain Biological Laboratory in Gothic, Colorado, as part of the Art-Science Exchange Project in the summer of 2024. She worked closely with ecologists Dr Paul CaraDonna, Dr Amy Iler, Dr Jane Ogilvie, Dr Nickolas Waser, Dr Mary Price, and Dr Will Petry, spending weeks engaged in long-term research on plants, pollinators, and their interactions.
 
